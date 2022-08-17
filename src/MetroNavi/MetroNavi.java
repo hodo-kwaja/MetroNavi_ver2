@@ -141,7 +141,6 @@ public class MetroNavi {
     * 메인 메서드*/
     public static void main(String[] args) {
         MakeTree mk = new MakeTree();
-
         databaseManager.connectDatabase();  //DB 연결
         initialize();
         mk.makeTree();

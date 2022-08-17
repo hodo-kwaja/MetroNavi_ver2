@@ -20,7 +20,6 @@ public class TimeAndDate {
             minute = 30;
         }
         String str = String.format("%02d" + "h" + minute + "m", hour);
-
         return str;
     }
 

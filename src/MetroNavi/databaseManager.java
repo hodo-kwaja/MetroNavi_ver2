@@ -27,7 +27,7 @@ class databaseManager {
         }
     }
 
-    public static ArrayList<Integer> searchDstLineNumDB(String stationName) {
+    public static ArrayList<Integer> searchLineNumDB(String stationName) {
         ArrayList<Integer> dstLineNum = new ArrayList<>();
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -88,8 +88,8 @@ class databaseManager {
                         resultSet.getInt("hour"),
                         resultSet.getInt("minute"),
                         resultSet.getString("week_type"),
-                        resultSet.getString("subway_type"),
-                        resultSet.getString("schedule_name")
+                        resultSet.getString("schedule_name"),
+                        resultSet.getString("subway_type")
                 ));
             }
         } catch (ClassNotFoundException e) {

@@ -39,20 +39,30 @@ public class ScheduleManager {
         ArrayList<TimeTable> newSchedule = new ArrayList<>();
         newSchedule.add(schedules.get(0));
         try {
-            if (schedules.get(0).scheduleName.equals(schedules.get(1).scheduleName)) {  //0, 1 종점 비교
-                if (!schedules.get(0).typeName.equals(schedules.get(1).typeName)) { //0, 1 타입 비교
+            if (schedules.get(0).scheduleName.equals(schedules.get(1).scheduleName)) {  //0, 1 종점 같음
+                if (!schedules.get(0).typeName.equals(schedules.get(1).typeName)) { //0, 1 타입 다름
                     newSchedule.add(schedules.get(1));
                 }
             }
             else {  //종점 다름
                 newSchedule.add(schedules.get(1));
             }
-            if (schedules.get(0).scheduleName.equals(schedules.get(2).scheduleName)) {  //0, 2 종점 비교
-                if (!schedules.get(0).typeName.equals(schedules.get(2).typeName)) { //0, 2 타입 비교
-                    if (schedules.get(1).scheduleName.equals(schedules.get(2).scheduleName)) {  //1, 2 종점 비교
-                        if (!schedules.get(1).typeName.equals(schedules.get(2).typeName)) { //1, 2 타입 비교
+            if (schedules.get(0).scheduleName.equals(schedules.get(2).scheduleName)) {  //0, 2 종점 같음
+                if (!schedules.get(0).typeName.equals(schedules.get(2).typeName)) { //0, 2 타입 다름
+                    if (schedules.get(1).scheduleName.equals(schedules.get(2).scheduleName)) {  //1, 2 종점 같음
+                        if (!schedules.get(1).typeName.equals(schedules.get(2).typeName)) { //1, 2 종점 다름
                             newSchedule.add(schedules.get(2));
                         }
+                    }
+                    else {  //1, 2 종점 다름
+                        newSchedule.add(schedules.get(2));
+                    }
+                }
+            }
+            else {  //0, 2 종점 다름
+                if (schedules.get(1).scheduleName.equals(schedules.get(2).scheduleName)) {
+                    if (!schedules.get(1).typeName.equals(schedules.get(2).typeName)) {
+                        newSchedule.add(schedules.get(2));
                     }
                 }
             }
@@ -79,15 +89,15 @@ public class ScheduleManager {
             String time = TimeAndDate.conver30Time(tt.hour, tt.minute); //30분 단위로 시간 끊기
             tt.congest = databaseManager.getCongestDB(time, station);   //혼잡도 가져오기
 
-             if(tt.congest >= 80.0) {
-                 tt.congestScore = 3;   //매우 혼잡
-             }
-             else if(tt.congest >= 50 && tt.congest < 80){
-                 tt.congestScore = 2;   //보통
-             }
-             else if(tt.congest <50) {
-                 tt.congestScore = 1;   //원활
-             }
+            if(tt.congest != 0.0) {
+                if (tt.congest >= 80.0) {
+                    tt.congestScore = 3;   //매우 혼잡
+                } else if (tt.congest >= 50.0 && tt.congest < 80.0) {
+                    tt.congestScore = 2;   //보통
+                } else if (tt.congest < 50.0) {
+                    tt.congestScore = 1;   //원활
+                }
+            }
              else {
                  tt.congestScore = 0;   //결과 없음
              }
@@ -107,7 +117,7 @@ public class ScheduleManager {
     /*public static boolean checkTransfer(String stationName)
     * 환승역 여부 확인*/
     public static boolean checkTransfer(String stationName) {
-        if(databaseManager.searchDstLineNumDB(stationName).size() > 1) {
+        if(databaseManager.searchLineNumDB(stationName).size() > 1) {
             return true;    //환승역
         }
         else {
@@ -117,35 +127,31 @@ public class ScheduleManager {
 
     /*public static ArrayList<Node> searchPossibleRoute(String stationName)
      * 역에서 갈 수 있는 경로 찾아서 반환*/
-    public static void searchPossibleRoute(Node parent) {
-        ArrayList<SubwayData> childs = databaseManager.getSubLineNameInfoDB(parent.data.stationName);   //이름으로 역 정보 가져옴
-        ArrayList<Node> route = new ArrayList<>();
-        for(SubwayData sd : childs) {
-            if(sd.nextStation != 0) {   //하행
-                parent.child.add(new Node(sd, true));
-            }
-            if(sd.beforeStation != 0) { //상행
-                parent.child.add(new Node(sd, false));
-            }
-        }
-        for(Node child : parent.child) {
-            ScheduleManager.getScheduleData(parent.data, child.data);   //시간표 업데이트
-            child.parentNode = parent;
-            if(dstLineNum.contains(child.data.lineId)) {    //도착역과 같은 호선
-                priorQ.offer(child);    //우선큐 추가
-            }
-            else {  //도착역과 다른 호선
-                queue.offer(child); //그냥 큐 추가
-            }
-        }
+    public static ArrayList<SubwayData> searchPossibleRoute(Node parent) {
+        return databaseManager.getSubLineNameInfoDB(parent.data.stationName);   //이름으로 역 정보 가져옴
     }
+
 
     /*public void searchDstLineNum()
      * 도착역에 무슨 라인이 지나가나 탐색*/
     public void searchDstLineNum() {
-        dstLineNum = databaseManager.searchDstLineNumDB(destinationStationName);    //도착역에 무슨 라인이 지나가나 탐색
+        dstLineNum = databaseManager.searchLineNumDB(destinationStationName);    //도착역에 무슨 라인이 지나가나 탐색
     }
 
+    /*public static void filterTransfer(ArrayList<SubwayData> route, Node station)
+    * 갈 수 잆는 경로 중 현재 노선이랑 다른 경로만 큐에 추가*/
+    public static void filterTransfer(ArrayList<SubwayData> route, Node station) {
+        ArrayList<SubwayData> newRoute = new ArrayList<>();
+        for(SubwayData r : route) {
+            if(r.lineId != station.data.lineId) {
+                newRoute.add(r);
+            }
+        }
+        MakeTree.addChild(station, newRoute);
+    }
+
+    /*public static void onePath(Node station)
+     * 도착역까지 한방에 경로 찾기*/
     public static void onePath(Node station) {
         if(station.lineDirection == 0) {    //하행
             Stack<SubwayData> stepPath = new Stack<>();
@@ -167,12 +173,12 @@ public class ScheduleManager {
                     ScheduleManager.getScheduleData(previous, temp);
                     if(temp.schedule.scheduleName.contains(temp.stationName)) { //종점일때
                         if(ScheduleManager.checkTransfer(temp.stationName)) {   //환승역
-
+                            Node transfer = new Node(temp);
+                            filterTransfer(searchPossibleRoute(transfer), transfer);  //현재 역이랑 다른 노선만 큐에 추가
                         }
                         else {  //환승역 아님
                             break;
                         }
-
                     }
                     else {  //종점 아님
                         previous = temp;
