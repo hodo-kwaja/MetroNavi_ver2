@@ -8,7 +8,7 @@ public class MakeTree {
 
 
     /*void initRoot()
-    * root 노드 초기화*/
+     * root 노드 초기화*/
     public void initRoot() {
         root.initRoot(ScheduleManager.departureStaionName, ScheduleManager.startHour, ScheduleManager.startMinute, ScheduleManager.weekType);   //root노드 초기화
         ScheduleManager.queue.offer(root);    //queue에 root노드 넣음
@@ -16,42 +16,51 @@ public class MakeTree {
 
 
     /*public static void addChild(Node parent, ArrayList<SubwayData> childs)
-    * 부모 노드에 자식노드(갈 수 있는 경로) 추가*/
+     * 부모 노드에 자식노드(갈 수 있는 경로) 추가*/
     public static void addChild(Node parent, ArrayList<SubwayData> childs) {
-        for(SubwayData sd : childs) {
-            if(sd.nextStation != 0) {   //하행
+        for (SubwayData sd : childs) {
+            if (sd.nextStation != 0) {   //하행
                 parent.child.add(new Node(sd, true));
             }
-            if(sd.beforeStation != 0) { //상행
-                parent.child.add(new Node(sd, false));
+            if (parent.data.stationName.equals("응암") || parent.data.stationName.equals("구산") || parent.data.stationName.equals("연신내") || parent.data.stationName.equals("독바위") || parent.data.stationName.equals("불광") || parent.data.stationName.equals("역촌")) {
+                if (sd.beforeStation != 0 && sd.beforeStation != 201 && sd.beforeStation != 367 && sd.beforeStation != 203 && sd.beforeStation != 366) { //상행
+                    parent.child.add(new Node(sd, false));
+                }
+                if (ScheduleManager.station365 && sd.beforeStation == 366) {
+                    parent.child.add(new Node(sd, false));
+                }
+
+            } else {
+                if (sd.beforeStation != 0) {
+                    parent.child.add(new Node(sd, false));
+                }
             }
         }
-        for(Node child : parent.child) {
-            ScheduleManager.getScheduleData(parent.data, child.data);   //시간표 업데이트
+        for (Node child : parent.child) {
             child.parentNode = parent;
-            if(ScheduleManager.dstLineNum.contains(child.data.lineId)) {    //도착역과 같은 호선
+            if (ScheduleManager.dstLineNum.contains(child.data.lineId)) {    //도착역과 같은 호선
                 ScheduleManager.priorQ.offer(child);    //우선큐 추가
-            }
-            else {  //도착역과 다른 호선
+            } else {  //도착역과 다른 호선
                 ScheduleManager.queue.offer(child); //그냥 큐 추가
             }
         }
     }
 
     /*public static void makeTree()
-    * */
+     * */
     public static void makeTree() {
-        while(true) {
+        while (true) {
             Node station = ScheduleManager.queue.poll();
             addChild(station, ScheduleManager.searchPossibleRoute(station));
-            while(!ScheduleManager.priorQ.isEmpty()) {
-                ScheduleManager.onePath(ScheduleManager.priorQ.poll()); //한방에 경로 찾기
-            }
-            while(!ScheduleManager.queue.isEmpty()) {
-                //한 라운드 실행
-            }
-            if(ScheduleManager.path.size() == 5) {
-                break;
+            while (true) {
+                if (!ScheduleManager.priorQ.isEmpty()) {
+                    ScheduleManager.onePath(ScheduleManager.priorQ.poll()); //한방에 경로 찾기
+                } else if (!ScheduleManager.queue.isEmpty()) {
+                    ScheduleManager.onePath(ScheduleManager.queue.poll()); //한방에 경로 찾기
+                }
+                if (ScheduleManager.path.size() == ScheduleManager.dstLineNum.size()) {
+                    break;
+                }
             }
         }
     }

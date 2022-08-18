@@ -8,6 +8,7 @@ import java.util.Stack;
 
 public class ScheduleManager {
 
+    static boolean station365 = false;
     static String departureStaionName; //출발역 이름
     static String destinationStationName;  //도착역 이름
     static ArrayList<Integer> dstLineNum;
@@ -82,6 +83,11 @@ public class ScheduleManager {
         }
     }
 
+    /*public static void checkType()
+    * 역에 급행, 특급이 서는지 확인*/
+    public static void checkType() {
+
+    }
     /*public static void updateCongest(SubwayData child)
     * 혼잡도 가져오기*/
     public static void updateCongest(SubwayData station) {
@@ -114,6 +120,10 @@ public class ScheduleManager {
         updateSchedule(child);  //schedule 업데이트
     }
 
+    /*public static void getRoute()*/
+    public static void getRoute() {
+
+    }
     /*public static boolean checkTransfer(String stationName)
     * 환승역 여부 확인*/
     public static boolean checkTransfer(String stationName) {
@@ -143,9 +153,67 @@ public class ScheduleManager {
     public static void filterTransfer(ArrayList<SubwayData> route, Node station) {
         ArrayList<SubwayData> newRoute = new ArrayList<>();
         for(SubwayData r : route) {
+            r.lineDirection =  station.lineDirection;
             if(r.lineId != station.data.lineId) {
                 newRoute.add(r);
             }
+            else {
+                if (!station365) {
+                    if (station.lineDirection == 0) {    //하행
+                        if (station.data.stationDetailId == r.stationDetailId) {
+                            r.beforeStation = 0;
+                            newRoute.add(r);
+                        } else {
+                            if (r.beforeStation == 366) {
+                                newRoute.add(r);
+                            } else {
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            }
+                        }
+                    } else {  //상행
+                        if (station.data.stationDetailId == r.stationDetailId) {
+                            r.nextStation = 0;
+                            newRoute.add(r);
+                        } else {
+                            if (r.nextStation == 88) { //세마 -> 병점 -> 서동탄
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 72) { //석수 -> 금천구청 -> 광명
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 44) {  //가산디지털단지 -> 구로 -> 구일
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 68) {  //구일 -> 구로 -> 가산디지털단지
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 348) { //둔촌동 -> 강동 -> 길동
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 358) { //길동 -> 강동 -> 둔촌동
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 144) { //건대입구 -> 성수 -> 용답
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 177) { //문래 -> 신도림 -> 도림천
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 190) {
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            } else if (r.nextStation == 193) {
+                                r.beforeStation = 0;
+                                newRoute.add(r);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(station.data.stationDetailId == 365) {
+            station365 = true;
         }
         MakeTree.addChild(station, newRoute);
     }
@@ -155,65 +223,68 @@ public class ScheduleManager {
     public static void onePath(Node station) {
         if(station.lineDirection == 0) {    //하행
             Stack<SubwayData> stepPath = new Stack<>();
-            SubwayData temp = new SubwayData();
+            SubwayData temp;
             SubwayData previous = station.data;
-
-            while(true) {
-                temp = databaseManager.getStationWithDetailIdDB(previous.nextStation);
+            temp = databaseManager.getStationWithDetailIdDB(previous.nextStation);
+            while(temp != null) {
                 temp.lineDirection = 0;
                 if(temp.stationName.contains(destinationStationName)) { //목적지
-                    ScheduleManager.getScheduleData(previous, temp);
                     Node destination = new Node(temp);
                     station.child.add(destination);
                     destination.parentNode = station;
+                    station.step = stepPath;
                     path.add(destination);
                     break;
                 }
                 else {  //목적지 아님
-                    ScheduleManager.getScheduleData(previous, temp);
-                    if(temp.schedule.scheduleName.contains(temp.stationName)) { //종점일때
-                        if(ScheduleManager.checkTransfer(temp.stationName)) {   //환승역
-                            Node transfer = new Node(temp);
-                            filterTransfer(searchPossibleRoute(transfer), transfer);  //현재 역이랑 다른 노선만 큐에 추가
+                    if(ScheduleManager.checkTransfer(temp.stationName)) {   //환승역
+                        if(temp.stationDetailId == 87) {
+                            System.out.println("병점");
                         }
-                        else {  //환승역 아님
-                            break;
-                        }
+                        Node transfer = new Node(temp);
+                        filterTransfer(searchPossibleRoute(transfer), transfer);  //현재 역이랑 다른 노선만 큐에 추가
+                        station.step = stepPath;
+                        station.child.add(transfer);
+                        transfer.parentNode = station;
+                        break;
                     }
-                    else {  //종점 아님
-                        previous = temp;
-                        temp = databaseManager.getStationWithDetailIdDB(temp.nextStation);
+                    else {  //환승역 아님
+                        stepPath.push(temp);
                     }
-                    stepPath.push(temp);
+                    previous = temp;
+                    temp = databaseManager.getStationWithDetailIdDB(previous.nextStation);
                 }
             }
         }
         else {  //상행
             Stack<SubwayData> stepPath = new Stack<>();
-            SubwayData temp = new SubwayData();
+            SubwayData temp;
             SubwayData previous = station.data;
-
-            while(true) {
-                temp = databaseManager.getStationWithDetailIdDB(previous.beforeStation);
+            temp = databaseManager.getStationWithDetailIdDB(previous.beforeStation);
+            while(temp != null) {
                 temp.lineDirection = 1;
                 if(temp.stationName.contains(destinationStationName)) { //목적지
-                    ScheduleManager.getScheduleData(previous, temp);
                     Node destination = new Node(temp);
                     station.child.add(destination);
                     destination.parentNode = station;
+                    station.step = stepPath;
                     path.add(destination);
                     break;
                 }
                 else {  //목적지 아님
-                    ScheduleManager.getScheduleData(previous, temp);
-                    if(temp.schedule.scheduleName.contains(temp.stationName)) { //종점일때
+                    if(ScheduleManager.checkTransfer(temp.stationName)) {   //환승역
+                        Node transfer = new Node(temp);
+                        filterTransfer(searchPossibleRoute(transfer), transfer);  //현재 역이랑 다른 노선만 큐에 추가
+                        station.step = stepPath;
+                        station.child.add(transfer);
+                        transfer.parentNode = station;
                         break;
                     }
-                    else {
-                        previous = temp;
-                        temp = databaseManager.getStationWithDetailIdDB(temp.beforeStation);
+                    else {  //환승역 아님
+                        stepPath.push(temp);
                     }
-                    stepPath.push(temp);
+                    previous = temp;
+                    temp = databaseManager.getStationWithDetailIdDB(previous.beforeStation);
                 }
             }
         }

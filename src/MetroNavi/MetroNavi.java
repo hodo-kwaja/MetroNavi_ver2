@@ -9,6 +9,7 @@ class Node {
 
     Node(SubwayData SD) {
         this.data = SD;
+        this.lineDirection = SD.lineDirection;
     }
     Node(SubwayData SD, boolean boo) {
         if(boo) {   //하행
@@ -19,6 +20,7 @@ class Node {
             this.data.stationDetailId = SD.stationDetailId;
             this.data.stationCode = SD.stationCode;
             this.data.nextStation = SD.nextStation;
+            this.data.transfer = SD.transfer;
         }
         else {  //상행
             this.lineDirection = 1; //상행
@@ -28,6 +30,7 @@ class Node {
             this.data.stationDetailId = SD.stationDetailId;
             this.data.stationCode = SD.stationCode;
             this.data.beforeStation = SD.beforeStation;
+            this.data.transfer = SD.transfer;
         }
     }
     int lineDirection;  //진행방향
@@ -71,7 +74,9 @@ class SubwayData {
     TimeTable schedule = new TimeTable();  //최적 시간표
     ArrayList<TimeTable> candiSchedule = new ArrayList<>();   //후보 시간표
 
-    boolean transfer;   //환승역 여부
+    boolean express = false;    //급행 여부
+    boolean special = false;    //특급 여부
+    boolean transfer = false;   //환승역 여부
     Transfer transferInfo; //환승 정보
 }
 
