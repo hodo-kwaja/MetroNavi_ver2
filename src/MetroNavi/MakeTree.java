@@ -61,9 +61,9 @@ public class MakeTree {
             Node station = ScheduleManager.queue.poll();
             addChild(station, ScheduleManager.searchPossibleRoute(station));
             while (true) {
-                if(!ScheduleManager.priorQ.isEmpty()) {
-                    ScheduleManager.onePath(ScheduleManager.priorQ.poll()); //한방에 경로 찾기
-                }else if (!ScheduleManager.queue.isEmpty()){
+                if(!ScheduleManager.priorQ.isEmpty()) { //도착역과 같은 호선
+                    ScheduleManager.onePath(ScheduleManager.priorQ.poll());
+                }else if (!ScheduleManager.queue.isEmpty()){    //도착역과 다른 호선
                     ScheduleManager.onePath(ScheduleManager.queue.poll());
                 }
                 if (ScheduleManager.path.size() == 7) {
