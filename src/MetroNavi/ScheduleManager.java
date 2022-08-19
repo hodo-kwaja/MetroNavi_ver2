@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public class ScheduleManager {
 
-    static boolean station365 = false;
+    static boolean[] visit = new boolean[1044];
     static String departureStaionName; //출발역 이름
     static String destinationStationName;  //도착역 이름
     static ArrayList<Integer> dstLineNum;
@@ -158,19 +158,19 @@ public class ScheduleManager {
                 newRoute.add(r);
             }
             else {
-                if (!station365) {
                     if (station.lineDirection == 0) {    //하행
-                        if (station.data.stationDetailId == r.stationDetailId) {
+                        if (station.data.stationDetailId == r.stationDetailId) {    //왔던 방향은 추가 안함
                             r.beforeStation = 0;
                             newRoute.add(r);
                         } else {
-                            if (r.beforeStation == 366) {
-                                newRoute.add(r);
-                            } else {
-                                r.beforeStation = 0;
+                            if(r.beforeStation == 510) {    //광운대 -> 상봉 -> 중₩
+                                r.nextStation = 0;
                                 newRoute.add(r);
                             }
+                            r.beforeStation = 0;
+                            newRoute.add(r);
                         }
+
                     } else {  //상행
                         if (station.data.stationDetailId == r.stationDetailId) {
                             r.nextStation = 0;
@@ -200,10 +200,10 @@ public class ScheduleManager {
                             } else if (r.nextStation == 177) { //문래 -> 신도림 -> 도림천
                                 r.beforeStation = 0;
                                 newRoute.add(r);
-                            } else if (r.nextStation == 190) {
+                            } else if (r.nextStation == 190) {  //
                                 r.beforeStation = 0;
                                 newRoute.add(r);
-                            } else if (r.nextStation == 193) {
+                            } else if (r.nextStation == 193) {  //
                                 r.beforeStation = 0;
                                 newRoute.add(r);
                             }
@@ -211,10 +211,6 @@ public class ScheduleManager {
                     }
                 }
             }
-        }
-        if(station.data.stationDetailId == 365) {
-            station365 = true;
-        }
         MakeTree.addChild(station, newRoute);
     }
 
@@ -234,13 +230,15 @@ public class ScheduleManager {
                     destination.parentNode = station;
                     station.step = stepPath;
                     path.add(destination);
+/*                    for(boolean b : visit) {
+                        if(b == true) {
+                            b = false;
+                        }
+                    }*/
                     break;
                 }
                 else {  //목적지 아님
                     if(ScheduleManager.checkTransfer(temp.stationName)) {   //환승역
-                        if(temp.stationDetailId == 87) {
-                            System.out.println("병점");
-                        }
                         Node transfer = new Node(temp);
                         filterTransfer(searchPossibleRoute(transfer), transfer);  //현재 역이랑 다른 노선만 큐에 추가
                         station.step = stepPath;
@@ -269,6 +267,11 @@ public class ScheduleManager {
                     destination.parentNode = station;
                     station.step = stepPath;
                     path.add(destination);
+/*                    for(boolean b : visit) {
+                        if(b == true) {
+                            b = false;
+                        }
+                    }*/
                     break;
                 }
                 else {  //목적지 아님

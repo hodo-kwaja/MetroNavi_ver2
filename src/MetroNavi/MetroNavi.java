@@ -21,6 +21,7 @@ class Node {
             this.data.stationCode = SD.stationCode;
             this.data.nextStation = SD.nextStation;
             this.data.transfer = SD.transfer;
+            this.data.stationId = SD.stationId;
         }
         else {  //상행
             this.lineDirection = 1; //상행
@@ -31,6 +32,7 @@ class Node {
             this.data.stationCode = SD.stationCode;
             this.data.beforeStation = SD.beforeStation;
             this.data.transfer = SD.transfer;
+            this.data.stationId = SD.stationId;
         }
     }
     int lineDirection;  //진행방향
