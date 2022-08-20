@@ -1,14 +1,12 @@
 package MetroNavi;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class ScheduleManager {
 
-    static boolean[] visit = new boolean[1045];
+    static boolean[] visit = new boolean[1045]; //지나온 역
+    static boolean[] line = new boolean[117];   //지나온 호선
     static String departureStaionName; //출발역 이름
     static String destinationStationName;  //도착역 이름
     static ArrayList<Integer> dstLineNum;
@@ -151,13 +149,16 @@ public class ScheduleManager {
     /*public static void filterTransfer(ArrayList<SubwayData> route, Node station)
     * 갈 수 잆는 경로 중 현재 노선이랑 다른 경로만 큐에 추가*/
     public static void filterTransfer(ArrayList<SubwayData> route, Node station, Node parent) {
+        ArrayList<SubwayData> transRoute = new ArrayList<>();
         ArrayList<SubwayData> newRoute = new ArrayList<>();
         boolean transfer = false;
         for (SubwayData r : route) {
             r.lineDirection = station.lineDirection;
             if (r.lineId != station.data.lineId) {
-                newRoute.add(r);
-                transfer = true;
+                if(!parent.line.contains(r.lineId)) {
+                    transRoute.add(r);
+                    transfer = true;
+                }
             } else {
                 if (station.lineDirection == 0) {    //하행
                     if (station.data.stationDetailId == r.stationDetailId) {    //왔던 방향은 추가 안함
@@ -166,7 +167,8 @@ public class ScheduleManager {
                     } else {
                         if (r.beforeStation == 510) {    //광운대 -> 상봉 -> 중랑
                             r.nextStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         }
                         r.beforeStation = 0;
                         newRoute.add(r);
@@ -174,39 +176,55 @@ public class ScheduleManager {
 
                 } else {  //상행
                     if (station.data.stationDetailId == r.stationDetailId) {
-                        r.nextStation = 0;
-                        newRoute.add(r);
+                        if(r.nextStation == 366) {  //새절 -> 응암 -> 역촌
+                            r.beforeStation = 0;
+                            newRoute.add(r);
+                        }
+                        else {
+                            r.nextStation = 0;
+                            newRoute.add(r);
+                        }
                     } else {
                         if (r.nextStation == 88) { //세마 -> 병점 -> 서동탄
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.nextStation == 72) { //석수 -> 금천구청 -> 광명
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.nextStation == 44) {  //가산디지털단지 -> 구로 -> 구일
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.nextStation == 68) {  //구일 -> 구로 -> 가산디지털단지
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.nextStation == 348) { //둔촌동 -> 강동 -> 길동
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.nextStation == 358) { //길동 -> 강동 -> 둔촌동
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.nextStation == 144) { //건대입구 -> 성수 -> 용답
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.nextStation == 177) { //문래 -> 신도림 -> 도림천
                             r.beforeStation = 0;
-                            newRoute.add(r);
-                        } else if (r.nextStation == 190) {  //
+                            transRoute.add(r);
+                            transfer = true;
+                        } else if (r.nextStation == 190) {  //홍대입구 -> 가좌 -> 신촌(경의중앙)
                             r.beforeStation = 0;
-                            newRoute.add(r);
-                        } else if (r.nextStation == 193) {  //
+                            transRoute.add(r);
+                            transfer = true;
+                        } else if (r.nextStation == 193) {  //신촌(경의중앙) -> 가좌 -> 홍대입구
                             r.beforeStation = 0;
-                            newRoute.add(r);
+                            transRoute.add(r);
+                            transfer = true;
                         } else if (r.beforeStation == 510) { //망우 -> 상봉 -> 중랑
                             r.nextStation = 0;
                             newRoute.add(r);
@@ -215,13 +233,12 @@ public class ScheduleManager {
                 }
             }
         }
+        MakeTree.addChild(parent, newRoute, false);
         if (transfer) {
+            station.line.addAll(parent.line);
             parent.child.add(station);
             station.parentNode = parent;
-            MakeTree.addChild(station, newRoute);
-        }
-        else {
-            MakeTree.addChild(parent, newRoute);
+            MakeTree.addChild(station, transRoute, true);
         }
     }
 
@@ -241,11 +258,8 @@ public class ScheduleManager {
                     destination.parentNode = station;
                     station.step = stepPath;
                     path.add(destination);
-                    for(boolean b : visit) {
-                        if(b == true) {
-                            b = false;
-                        }
-                    }
+                    Arrays.fill(visit, false);
+                    Arrays.fill(line, false);
                     break;
                 }
                 else {  //목적지 아님
@@ -278,11 +292,8 @@ public class ScheduleManager {
                     destination.parentNode = station;
                     station.step = stepPath;
                     path.add(destination);
-                    for(boolean b : visit) {
-                        if(b == true) {
-                            b = false;
-                        }
-                    }
+                    Arrays.fill(visit, false);
+                    Arrays.fill(line, false);
                     break;
                 }
                 else {  //목적지 아님
@@ -302,5 +313,6 @@ public class ScheduleManager {
                 }
             }
         }
+
     }
 }

@@ -11,7 +11,7 @@ class Node {
         this.data = SD;
         this.lineDirection = SD.lineDirection;
     }
-    Node(SubwayData SD, boolean boo) {
+    Node(SubwayData SD, boolean boo, Node parent) {
         if(boo) {   //하행
             this.lineDirection = 0; //하행
             this.data.lineDirection = 0;
@@ -22,6 +22,7 @@ class Node {
             this.data.nextStation = SD.nextStation;
             this.data.transfer = SD.transfer;
             this.data.stationId = SD.stationId;
+            this.line.addAll(parent.line);
         }
         else {  //상행
             this.lineDirection = 1; //상행
@@ -33,6 +34,7 @@ class Node {
             this.data.beforeStation = SD.beforeStation;
             this.data.transfer = SD.transfer;
             this.data.stationId = SD.stationId;
+            this.line.addAll(parent.line);
         }
     }
     int lineDirection;  //진행방향
@@ -41,7 +43,7 @@ class Node {
     Node parentNode;   //부모 노드
     ArrayList<Node> child = new ArrayList<>();    //자식 노드
     Stack<SubwayData> step;   //중간 정류장
-
+    Set<Integer> line = new HashSet<>();    //지나온 노선
     public void initRoot(String DSN, int SH, int SM, String WT) {
         this.data.stationName = DSN;    //출발역
         this.data.schedule.hour = SH; //출발 시각(시)
