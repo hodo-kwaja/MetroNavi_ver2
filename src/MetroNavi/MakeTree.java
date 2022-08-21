@@ -67,24 +67,23 @@ public class MakeTree {
             }
     }
 
+
     /*public static void makeTree()
      * */
     public static void makeTree() {
         while (true) {
             Node station = ScheduleManager.queue.poll();
             addChild(station, ScheduleManager.searchPossibleRoute(station), true);
-            int count = 1;
-            while (true) {
+            long start = System.currentTimeMillis();
+            long end = start + 1 * 1500;
+            while (System.currentTimeMillis() < end) {  //1.5초 실행
                 if(!ScheduleManager.priorQ.isEmpty()) { //도착역과 같은 호선
                     ScheduleManager.onePath(ScheduleManager.priorQ.poll());
                 }else if (!ScheduleManager.queue.isEmpty()){    //도착역과 다른 호선
                     ScheduleManager.onePath(ScheduleManager.queue.poll());
                 }
-                if (ScheduleManager.path.size() == 7) {
-                    break;
-                }
-                System.out.println(count++);
             }
+            ScheduleManager.abd();
         }
     }
 }
