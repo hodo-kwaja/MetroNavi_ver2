@@ -6,13 +6,11 @@ import java.util.*;
 public class ScheduleManager {
 
     static boolean[] visit = new boolean[1045]; //지나온 역
-    static boolean[] line = new boolean[117];   //지나온 호선
     static String departureStaionName; //출발역 이름
     static String destinationStationName;  //도착역 이름
     static ArrayList<Integer> dstLineNum;
     static int startHour, startMinute; //출발 시각(시, 분)
     static String weekType;    //요일
-    static Node[] shortestNode = new Node[644];   //역까지 최단 시간으로 도착하는 노드들
     static ArrayList<Node> path = new ArrayList<>();   //도착역에 도착한 노드들
     static Queue<Node> queue = new LinkedList<>(); //도착역과 호선이 다른 경로
     static Queue<Node> priorQ = new LinkedList<>();    //도착역과 호선이 같은 경로
@@ -259,7 +257,6 @@ public class ScheduleManager {
                     station.step = stepPath;
                     path.add(destination);
                     Arrays.fill(visit, false);
-                    Arrays.fill(line, false);
                     break;
                 }
                 else {  //목적지 아님
@@ -267,8 +264,6 @@ public class ScheduleManager {
                         Node transfer = new Node(temp);
                         filterTransfer(searchPossibleRoute(transfer), transfer, station);  //현재 역이랑 다른 노선만 큐에 추가
                         station.step = stepPath;
-                        //station.child.add(transfer);
-                        //transfer.parentNode = station;
                         break;
                     }
                     else {  //환승역 아님
@@ -293,7 +288,6 @@ public class ScheduleManager {
                     station.step = stepPath;
                     path.add(destination);
                     Arrays.fill(visit, false);
-                    Arrays.fill(line, false);
                     break;
                 }
                 else {  //목적지 아님
@@ -301,8 +295,6 @@ public class ScheduleManager {
                         Node transfer = new Node(temp);
                         filterTransfer(searchPossibleRoute(transfer), transfer, station);  //현재 역이랑 다른 노선만 큐에 추가
                         station.step = stepPath;
-                        //station.child.add(transfer);
-                        //transfer.parentNode = station;
                         break;
                     }
                     else {  //환승역 아님
