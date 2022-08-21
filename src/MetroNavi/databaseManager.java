@@ -143,4 +143,23 @@ class databaseManager {
         }
         return result;
     }
+
+    public static void getTransferInfoDB(SubwayData start, SubwayData finish) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement stmt = conn.createStatement();
+            String strQuery1 = String.format("SELECT time_sec, distance FROM Subway.sub_transfer WHERE start_station_detail_id = %d AND finish_station_detail_id = %d ", start.stationDetailId, finish.stationDetailId);
+            java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
+            while(resultSet.next()) {
+                start.transferInfo = new Transfer(
+                        start.transferNum,
+                        resultSet.getInt("time_sec"),
+                        resultSet.getInt("distance"));
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("드라이버 로드 에러");
+        } catch (SQLException e) {
+            System.out.println("DB 연결 에러");
+        }
+    }
 }
