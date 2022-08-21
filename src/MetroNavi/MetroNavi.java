@@ -42,7 +42,7 @@ class Node {
     SubwayData data = new SubwayData(); //데이터
     Node parentNode;   //부모 노드
     ArrayList<Node> child = new ArrayList<>();    //자식 노드
-    Stack<SubwayData> step;   //중간 정류장
+    Stack<SubwayData> step = new Stack<>();   //중간 정류장
     Set<Integer> line = new HashSet<>();    //지나온 노선
     public void initRoot(String DSN, int SH, int SM, String WT) {
         this.data.stationName = DSN;    //출발역
@@ -127,6 +127,14 @@ class TimeTable {
     int congestScore;  //혼잡도 환산 점수
 }
 
+class pathInfo {
+
+    int transferNum;    //환승 횟수
+    int stepNum;    //정류장 수
+    int duration;   //소요 시간
+    double conges;  //혼잡도
+    Queue<SubwayData> path; //경로
+}
 
 public class MetroNavi {
     /*public static void ininialize()
@@ -153,5 +161,8 @@ public class MetroNavi {
         databaseManager.connectDatabase();  //DB 연결
         initialize();
         mk.makeTree();
+        pathInfo shcrtestPath = new pathInfo(); //최소 시간
+        pathInfo minTransferPath = new pathInfo();  //최소 환승
+        pathInfo lowCongestPath = new pathInfo();   //덜 혼잡
     }
 }
