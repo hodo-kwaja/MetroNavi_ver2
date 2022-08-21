@@ -22,6 +22,8 @@ class Node {
             this.data.nextStation = SD.nextStation;
             this.data.transfer = SD.transfer;
             this.data.stationId = SD.stationId;
+            this.data.transferNum = SD.transferNum;
+            this.data.transferInfo.transferNum = SD.transferNum;
             this.line.addAll(parent.line);
         }
         else {  //상행
@@ -34,6 +36,8 @@ class Node {
             this.data.beforeStation = SD.beforeStation;
             this.data.transfer = SD.transfer;
             this.data.stationId = SD.stationId;
+            this.data.transferNum = SD.transferNum;
+            this.data.transferInfo.transferNum = SD.transferNum;
             this.line.addAll(parent.line);
         }
     }
@@ -74,27 +78,22 @@ class SubwayData {
     int stationId;  //역 ID
     int beforeStation;  //이전 역
     int nextStation;    //다음 역
-
+    int transferNum = 0;
     TimeTable schedule = new TimeTable();  //최적 시간표
     ArrayList<TimeTable> candiSchedule = new ArrayList<>();   //후보 시간표
-
-    boolean express = false;    //급행 여부
-    boolean special = false;    //특급 여부
     boolean transfer = false;   //환승역 여부
-    Transfer transferInfo; //환승 정보
+    Transfer transferInfo = new Transfer(); //환승 정보
 }
 
 class Transfer {
 
-    Transfer(int SDI, int FDI, int D, int T) {
-        this.startDetailId = SDI;
-        this.finishDetailId = FDI;
+    Transfer() {}
+    Transfer(int TN, int D, int T) {
+        this.transferNum = TN;
         this.distance = D;
         this.timeSec  = T;
     }
-
-    int startDetailId;  //시작 역 station detail id
-    int finishDetailId; //도착 역 station detail id
+    int transferNum;
     int distance;   //이동 거리
     int timeSec;    //이동 시간
 }
@@ -132,8 +131,8 @@ class pathInfo {
     int transferNum;    //환승 횟수
     int stepNum;    //정류장 수
     int duration;   //소요 시간
-    double conges;  //혼잡도
-    Queue<SubwayData> path; //경로
+    double congest;  //혼잡도
+    Queue<SubwayData> path = new LinkedList<>(); //경로
 }
 
 public class MetroNavi {
