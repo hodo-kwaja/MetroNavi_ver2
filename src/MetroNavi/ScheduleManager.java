@@ -14,7 +14,7 @@ public class ScheduleManager {
     static ArrayList<Node> path = new ArrayList<>();   //도착역에 도착한 노드들
     static Queue<Node> queue = new LinkedList<>(); //도착역과 호선이 다른 경로
     static Queue<Node> priorQ = new LinkedList<>();    //도착역과 호선이 같은 경로
-
+    static ArrayList<Stack<SubwayData>> finalPath = new ArrayList<>();  //최종 도출 경로
 
     /*public static void updateSchedule(SubwayData station)
      * candiSchedule에서 시간이 가장 빠른 것을 schedule로 결정*/
@@ -98,16 +98,6 @@ public class ScheduleManager {
         }
     }
 
-    /*public static void getScheduleData(SubwayData parent, SubwayData child)
-     * */
-    public static void getScheduleData(SubwayData parent, SubwayData child) {
-        ArrayList<TimeTable> candiSchedules = refineSchedule(databaseManager.getScheduleDB(parent, child)); //시간표 가져오기 AND 중복 조건 시간표 제거
-        child.candiSchedule = candiSchedules;   //candiSchedule 업데이트
-        updatePathInfo(parent, child);  //경로 정보 업데이트
-        updateCongest(child);   //혼잡도 업데이트
-        updateSchedule(child);  //schedule 업데이트
-    }
-
     /*public static boolean checkTransfer(String stationName)
      * 환승역 여부 확인*/
     public static boolean checkTransfer(String stationName) {
@@ -142,6 +132,9 @@ public class ScheduleManager {
             if (r.lineId != station.data.lineId) {
                 if (!parent.line.contains(r.lineId)) {
                     transRoute.add(r);
+                    r.transferNum = ++parent.data.transferNum;
+                    station.data.transferNum = parent.data.transferNum;
+                    getTransferInfo(station.data, r);
                     r.transfer = true;
                     station.data.transfer = true;
                     transfer = true;
@@ -155,6 +148,9 @@ public class ScheduleManager {
                         if (r.beforeStation == 510) {    //광운대 -> 상봉 -> 중랑
                             r.nextStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
@@ -176,60 +172,90 @@ public class ScheduleManager {
                         if (r.nextStation == 88) { //세마 -> 병점 -> 서동탄
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 72) { //석수 -> 금천구청 -> 광명
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 44) {  //가산디지털단지 -> 구로 -> 구일
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 68) {  //구일 -> 구로 -> 가산디지털단지
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 348) { //둔촌동 -> 강동 -> 길동
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 358) { //길동 -> 강동 -> 둔촌동
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 144) { //건대입구 -> 성수 -> 용답
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 177) { //문래 -> 신도림 -> 도림천
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 190) {  //홍대입구 -> 가좌 -> 신촌(경의중앙)
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.nextStation == 193) {  //신촌(경의중앙) -> 가좌 -> 홍대입구
                             r.beforeStation = 0;
                             transRoute.add(r);
+                            r.transferNum = ++parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum;
+                            getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
@@ -278,6 +304,7 @@ public class ScheduleManager {
                         stepPath.push(temp);
                     }
                     previous = temp;
+                    temp.transferNum = station.data.transferNum;
                     temp = databaseManager.getStationWithDetailIdDB(previous.nextStation);
                 }
             }
@@ -306,15 +333,17 @@ public class ScheduleManager {
                         stepPath.push(temp);
                     }
                     previous = temp;
+                    temp.transferNum = station.data.transferNum;
                     temp = databaseManager.getStationWithDetailIdDB(previous.beforeStation);
                 }
             }
         }
     }
 
-    public static void abd() {
-        ArrayList<Stack<SubwayData>> path = new ArrayList<>();
-        for (Node dst : ScheduleManager.path) {
+    /*public static void routeOrganization()
+    * 경로 정리해서 stack에 담음*/
+    public static void routeOrganization() {
+        for (Node dst : path) {
             Stack<SubwayData> path1 = new Stack<>();
             Node station = dst;
             while (station.parentNode != null) {
@@ -326,7 +355,32 @@ public class ScheduleManager {
                 path1.push(station.data);
                 station = station.parentNode;
             }
-            path.add(path1);
+            finalPath.add(path1);
         }
+        ScheduleManager.addTimeLine();
+    }
+
+    /*public void addTimeline()
+    * 경로에 시간표 추가*/
+    public static void addTimeLine() {
+        ArrayList<pathInfo> pathInfos = new ArrayList<>();
+        SubwayData prev = MakeTree.root.data;
+        for(Stack<SubwayData> finalroute : finalPath) {
+            pathInfo info1 = new pathInfo();
+            while(!finalroute.isEmpty()) {
+                SubwayData station = finalroute.pop();
+                station.candiSchedule = refineSchedule(databaseManager.getScheduleDB(prev, station));   //시간표 3개 가져오기
+                updatePathInfo(prev, station);  //경로 정보 업데이트
+                updateSchedule(station);    //가장 빠른 시간표 업데이트
+                updateCongest(station); //혼잡도 업데이트
+                prev = station;
+            }
+            System.out.println("hello");
+        }
+    }
+
+
+    public static void getTransferInfo(SubwayData start, SubwayData finish) {
+        databaseManager.getTransferInfoDB(start, finish);
     }
 }
