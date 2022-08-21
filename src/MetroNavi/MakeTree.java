@@ -4,7 +4,7 @@ import java.util.*;
 
 public class MakeTree {
 
-    Node root = new Node(); //root 노드
+    static Node root = new Node(); //root 노드
 
 
     /*void initRoot()
@@ -83,7 +83,7 @@ public class MakeTree {
                     ScheduleManager.onePath(ScheduleManager.queue.poll());
                 }
             }
-            ScheduleManager.abd();
+            ScheduleManager.routeOrganization();    //경로 정리
         }
     }
 }
