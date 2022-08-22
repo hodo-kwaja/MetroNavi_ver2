@@ -132,8 +132,8 @@ public class ScheduleManager {
             if (r.lineId != station.data.lineId) {
                 if (!parent.line.contains(r.lineId)) {
                     transRoute.add(r);
-                    r.transferNum = ++parent.data.transferNum;
-                    station.data.transferNum = parent.data.transferNum;
+                    station.data.transferNum = parent.data.transferNum + 1;
+                    r.transferNum = station.data.transferNum;
                     getTransferInfo(station.data, r);
                     r.transfer = true;
                     station.data.transfer = true;
@@ -142,29 +142,35 @@ public class ScheduleManager {
             } else {
                 if (station.lineDirection == 0) {    //하행
                     if (station.data.stationDetailId == r.stationDetailId) {    //왔던 방향은 추가 안함
+                        r.transferNum = parent.data.transferNum;
                         r.beforeStation = 0;
                         newRoute.add(r);
                     } else {
                         if (r.beforeStation == 510) {    //광운대 -> 상봉 -> 중랑
                             r.nextStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         }
-                        r.beforeStation = 0;
-                        newRoute.add(r);
+                        else {
+                            r.transferNum = parent.data.transferNum;
+                            r.beforeStation = 0;
+                            newRoute.add(r);
+                        }
                     }
 
                 } else {  //상행
                     if (station.data.stationDetailId == r.stationDetailId) {
                         if (r.nextStation == 366) {  //새절 -> 응암 -> 역촌
+                            r.transferNum = parent.data.transferNum;
                             r.beforeStation = 0;
                             newRoute.add(r);
                         } else {
+                            r.transferNum = parent.data.transferNum;
                             r.nextStation = 0;
                             newRoute.add(r);
                         }
@@ -172,8 +178,8 @@ public class ScheduleManager {
                         if (r.nextStation == 88) { //세마 -> 병점 -> 서동탄
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -181,8 +187,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 72) { //석수 -> 금천구청 -> 광명
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -190,8 +196,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 44) {  //가산디지털단지 -> 구로 -> 구일
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -199,8 +205,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 68) {  //구일 -> 구로 -> 가산디지털단지
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -208,8 +214,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 348) { //둔촌동 -> 강동 -> 길동
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -217,8 +223,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 358) { //길동 -> 강동 -> 둔촌동
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -226,8 +232,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 144) { //건대입구 -> 성수 -> 용답
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -235,8 +241,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 177) { //문래 -> 신도림 -> 도림천
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -244,8 +250,8 @@ public class ScheduleManager {
                         } else if (r.nextStation == 190) {  //홍대입구 -> 가좌 -> 신촌(경의중앙)
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
@@ -253,13 +259,14 @@ public class ScheduleManager {
                         } else if (r.nextStation == 193) {  //신촌(경의중앙) -> 가좌 -> 홍대입구
                             r.beforeStation = 0;
                             transRoute.add(r);
-                            r.transferNum = ++parent.data.transferNum;
-                            station.data.transferNum = parent.data.transferNum;
+                            station.data.transferNum = parent.data.transferNum + 1;
+                            r.transferNum = station.data.transferNum;
                             getTransferInfo(station.data, r);
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
                         } else if (r.beforeStation == 510) { //망우 -> 상봉 -> 중랑
+                            r.transferNum = parent.data.transferNum;
                             r.nextStation = 0;
                             newRoute.add(r);
                         }
@@ -287,6 +294,7 @@ public class ScheduleManager {
             while (temp != null) {
                 temp.lineDirection = 0;
                 if (temp.stationName.contains(destinationStationName)) { //목적지
+                    temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
                     destination.parentNode = station;
@@ -316,6 +324,7 @@ public class ScheduleManager {
             while (temp != null) {
                 temp.lineDirection = 1;
                 if (temp.stationName.contains(destinationStationName)) { //목적지
+                    temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
                     destination.parentNode = station;
