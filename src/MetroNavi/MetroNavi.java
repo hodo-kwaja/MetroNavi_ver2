@@ -60,7 +60,7 @@ class SubwayData {
 
     SubwayData() {};
 
-    SubwayData(int SI, String SN, String SC, int SDI, int LI, int BS, int NS) {
+    SubwayData(int SI, String SN, String SC, int SDI, int LI, int BS, int NS, int E, int S) {
         stationId = SI;
         stationName = SN;
         stationCode = SC;
@@ -68,6 +68,8 @@ class SubwayData {
         lineId = LI;
         beforeStation = BS;
         nextStation = NS;
+        express = E;
+        special = S;
     }
 
     int lineDirection;
@@ -79,6 +81,8 @@ class SubwayData {
     int beforeStation;  //이전 역
     int nextStation;    //다음 역
     int transferNum = 0;
+    int express;
+    int special;
     TimeTable schedule = new TimeTable();  //최적 시간표
     ArrayList<TimeTable> candiSchedule = new ArrayList<>();   //후보 시간표
     boolean transfer = false;   //환승역 여부
@@ -106,19 +110,25 @@ class TimeTable {
         this.hour = H;
         this.minute = M;
     }
-    TimeTable(int H, int M, String WT, String SN, String TN) {
+    TimeTable(int SDI, int H, int M, String WT, String SN, String TN, int LD, int LI) {
+        this.stationDetailId = SDI;
         this.hour = H;
         this.minute = M;
         this.weekType = WT;
         this.scheduleName = SN;
         this.typeName = TN;
+        this.line_direction = LD;
+        this.line_id = LI;
     }
+    int stationDetailId;
     int hour = 0;   //출발 시각(시)
     int minute = 0; //출발 시각(분)
     String weekType;    //요일
     String scheduleName;    //종착 지점
     String typeName;    //열차 종류
 
+    int line_id;
+    int line_direction;
     int duration = 0;   //소요 시간
     int transferNum = 0;    //환승 횟수
     int numStep = 0;    //정류장 수
@@ -144,11 +154,11 @@ public class MetroNavi {
         System.out.print("출발역, 도착역, 시, 분, 요일 : ");
         Scanner input = new Scanner(System.in);
 
-        sm.departureStaionName = input.next();
-        sm.destinationStationName = input.next();
-        sm.startHour = Integer.parseInt(input.next());
-        sm.startMinute = Integer.parseInt(input.next());
-        sm.weekType = input.next();
+        ScheduleManager.departureStaionName = input.next();
+        ScheduleManager.destinationStationName = input.next();
+        ScheduleManager.startHour = Integer.parseInt(input.next());
+        ScheduleManager.startMinute = Integer.parseInt(input.next());
+        ScheduleManager.weekType = input.next();
         mk.initRoot();  //root노드 초기화
         sm.searchDstLineNum();  //도착역 호선 탐색
         }
@@ -159,7 +169,8 @@ public class MetroNavi {
         MakeTree mk = new MakeTree();
         databaseManager.connectDatabase();  //DB 연결
         initialize();
-        mk.makeTree();
+        ArrayList<pathInfo> pathInfos = MakeTree.makeTree();
+
         pathInfo shcrtestPath = new pathInfo(); //최소 시간
         pathInfo minTransferPath = new pathInfo();  //최소 환승
         pathInfo lowCongestPath = new pathInfo();   //덜 혼잡
