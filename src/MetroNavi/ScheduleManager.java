@@ -30,51 +30,170 @@ public class ScheduleManager {
         station.schedule = schedule;
     }
 
+    public static SubwayData giveMe(TimeTable TT) {
+        ArrayList<SubwayData> subs = databaseManager.getSubLineNameInfoDB(TT.scheduleName);
+        SubwayData result = new SubwayData();
+        for(SubwayData SD : subs) {
+            if(SD.lineId == TT.line_id) {
+                result =  SD;
+            }
+        }
+        return result;
+    }
+
     /*public static ArrayList<TimeTable> refineSchedule (ArrayList<TimeTable> schedules)
      * 조건 중복되는 시간표 제거*/
-    public static ArrayList<TimeTable> refineSchedule(ArrayList<TimeTable> schedules) {
-        ArrayList<TimeTable> newSchedule = new ArrayList<>();
-        newSchedule.add(schedules.get(0));
-        try {
-            if (schedules.get(0).scheduleName.equals(schedules.get(1).scheduleName)) {  //0, 1 종점 같음
-                if (!schedules.get(0).typeName.equals(schedules.get(1).typeName)) { //0, 1 타입 다름
-                    newSchedule.add(schedules.get(1));
-                }
-            } else {  //종점 다름
-                newSchedule.add(schedules.get(1));
-            }
-            if (schedules.get(0).scheduleName.equals(schedules.get(2).scheduleName)) {  //0, 2 종점 같음
-                if (!schedules.get(0).typeName.equals(schedules.get(2).typeName)) { //0, 2 타입 다름
-                    if (schedules.get(1).scheduleName.equals(schedules.get(2).scheduleName)) {  //1, 2 종점 같음
-                        if (!schedules.get(1).typeName.equals(schedules.get(2).typeName)) { //1, 2 종점 다름
-                            newSchedule.add(schedules.get(2));
-                        }
-                    } else {  //1, 2 종점 다름
-                        newSchedule.add(schedules.get(2));
-                    }
-                }
-            } else {  //0, 2 종점 다름
-                if (schedules.get(1).scheduleName.equals(schedules.get(2).scheduleName)) {
-                    if (!schedules.get(1).typeName.equals(schedules.get(2).typeName)) {
-                        newSchedule.add(schedules.get(2));
-                    }
-                }
-            }
-        } catch (IndexOutOfBoundsException e) {
-        }
+    public static TimeTable refineSchedule(ArrayList<TimeTable> schedules, int SDI) {
+        TimeTable newSchedule = new TimeTable();
+        SubwayData transtation = databaseManager.getStationWithDetailIdDB(SDI);
 
+        for(int i = 0; i < schedules.size(); i++) {
+            TimeTable TT = schedules.get(i);
+
+            if (TT.line_direction == 0) {    //하행
+
+                if (TT.line_id == 104) { //경의중앙
+                    SubwayData sub = giveMe(TT);
+                    int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                    if (TT.typeName.equals("E")) {
+                        if(transtation.express == 1) {
+                            if (transtation.stationCode.contains("P")) {    //신촌, 서울역
+                                if (TT.scheduleName.equals("서울역")) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            } else {
+                                if (result >= 0 && !sub.stationCode.contains("P")) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    else {
+                        if (transtation.stationCode.contains("P")) {    //신촌, 서울역
+                            if (TT.scheduleName.equals("서울역")) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        } else {
+                            if (result >= 0 && !sub.stationCode.contains("P")) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                else {
+                    if (TT.typeName.equals("E")) {  //급행
+                        if(transtation.express == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    }
+
+                    else if (TT.typeName.equals("S")) { //특급
+                        if(transtation.special == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    }
+
+                    else {
+                        SubwayData sub = giveMe(TT);
+                        int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                        if (result >= 0) {
+                            newSchedule = TT;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            else {  //상행
+                if(TT.line_id == 104) { //경의중앙
+                    if (TT.typeName.equals("E")) {  //급행
+                        if(transtation.express == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+                            if (result >= 0 && !sub.stationCode.contains("P")) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    }
+
+                    else {
+                        SubwayData sub = giveMe(TT);
+                        int result = sub.stationCode.compareTo(transtation.stationCode);
+                        if (result >= 0 && !sub.stationCode.contains("P")) {
+                            newSchedule = TT;
+                            break;
+                        }
+                    }
+                }
+
+                else {
+                    if (TT.typeName.equals("E")) {  //급행
+                        if(transtation.express == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    }
+
+                    else if (TT.typeName.equals("S")) { //특급
+                        if(transtation.special == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    }
+
+                    else {
+                        SubwayData sub = giveMe(TT);
+                        int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                        if (result <= 0) {
+                            newSchedule = TT;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         return newSchedule;
     }
 
     /*public static void updatePathInfo(SubwayData parent, SubwayData child)
      * 경로 정보 업데이트*/
     public static void updatePathInfo(SubwayData parent, SubwayData child) {
-        for (int i = 0; i < parent.candiSchedule.size(); i++) {
-            child.candiSchedule.get(i).numStep = parent.candiSchedule.get(i).numStep + 1;   //경유역 수
-            child.candiSchedule.get(i).transferNum = parent.candiSchedule.get(i).transferNum;   //환승 수
-            child.candiSchedule.get(i).duration = TimeAndDate.convertTimeToScore(child.candiSchedule.get(i).hour, child.candiSchedule.get(i).minute)
-                    - TimeAndDate.convertTimeToScore(parent.candiSchedule.get(i).hour, parent.candiSchedule.get(i).minute);    //소요시간
-        }
+            child.schedule.numStep = parent.schedule.numStep + 1;   //경유역 수
+            child.schedule.transferNum = parent.schedule.transferNum;   //환승 수
+            child.schedule.duration = TimeAndDate.convertTimeToScore(child.schedule.hour, child.schedule.minute)
+                    - TimeAndDate.convertTimeToScore(parent.schedule.hour, parent.schedule.minute);    //소요시간
     }
 
     /*public static void updateCongest(SubwayData child)
@@ -351,41 +470,62 @@ public class ScheduleManager {
 
     /*public static void routeOrganization()
     * 경로 정리해서 stack에 담음*/
-    public static void routeOrganization() {
+    public static ArrayList<pathInfo> routeOrganization(){
+        ArrayList<Stack<Integer>> transNum = new ArrayList<>();
         for (Node dst : path) {
             Stack<SubwayData> path1 = new Stack<>();
+            Stack<Integer> transnum = new Stack<>();
             Node station = dst;
+            transnum.push(station.data.stationDetailId);
             while (station.parentNode != null) {
                 if (!station.step.isEmpty()) {
                     while (!station.step.isEmpty()) {
-                        path1.push(station.step.pop());
+                        SubwayData tmp = station.step.pop();
+                        path1.push(tmp);
                     }
+                }
+                if(station.data.transfer) {
+                    transnum.push(station.data.stationDetailId);
                 }
                 path1.push(station.data);
                 station = station.parentNode;
             }
+            transNum.add(transnum);
             finalPath.add(path1);
         }
-        ScheduleManager.addTimeLine();
+        return ScheduleManager.addTimeLine(transNum);   //시간표 추가
     }
 
     /*public void addTimeline()
     * 경로에 시간표 추가*/
-    public static void addTimeLine() {
+    public static ArrayList<pathInfo> addTimeLine(ArrayList<Stack<Integer>> transNum) {
         ArrayList<pathInfo> pathInfos = new ArrayList<>();
-        SubwayData prev = MakeTree.root.data;
-        for(Stack<SubwayData> finalroute : finalPath) {
+        SubwayData root = MakeTree.root.data;
+        for(int i = 0; i < finalPath.size(); i++) {
+            Stack<SubwayData> finalroute = finalPath.get(i);    //경로 n번
+            Stack<Integer> transtation = transNum.get(i);   //통과역 n번
             pathInfo info1 = new pathInfo();
+            SubwayData prev = root; //이번 역
             while(!finalroute.isEmpty()) {
                 SubwayData station = finalroute.pop();
-                station.candiSchedule = refineSchedule(databaseManager.getScheduleDB(prev, station));   //시간표 3개 가져오기
+                if(station.transfer || prev == root) {
+                    station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station), transtation.pop());
+                }
+                else {
+                    station.schedule = databaseManager.getOneScheduleDB(prev, station);
+                    if(station.schedule.line_id == 0) {
+                        continue;
+                    }
+                }
+                info1.path.offer(station);
                 updatePathInfo(prev, station);  //경로 정보 업데이트
-                updateSchedule(station);    //가장 빠른 시간표 업데이트
                 updateCongest(station); //혼잡도 업데이트
                 prev = station;
             }
+            pathInfos.add(info1);
             System.out.println("hello");
         }
+        return pathInfos;
     }
 
 
