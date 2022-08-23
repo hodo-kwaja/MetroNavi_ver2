@@ -60,7 +60,9 @@ class databaseManager {
                         resultSet.getInt("station_detail_id"),
                         resultSet.getInt("line_id"),
                         resultSet.getInt("before_station"),
-                        resultSet.getInt("next_station")
+                        resultSet.getInt("next_station"),
+                        resultSet.getInt("express"),
+                        resultSet.getInt("special")
                 ));
             }
         } catch (ClassNotFoundException e) {
@@ -79,17 +81,20 @@ class databaseManager {
             String strQuery;
             strQuery = String.format("SELECT station_detail_id, line_direction, subway_type, week_type, schedule_name, hour, minute, line_id " +
                             "FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND hour - %d <= 1 AND ((hour * 60 + minute) " +
-                            "- (%d * 60 + %d)) >= 0 AND week_type = \'%s\' AND line_direction = %d LIMIT 3 ",
+                            "- (%d * 60 + %d)) >= 0 AND week_type = \'%s\' AND line_direction = %d LIMIT 5",
                     child.lineId, child.stationDetailId, parent.schedule.hour, parent.schedule.hour, parent.schedule.minute,
                     parent.schedule.weekType, child.lineDirection, parent.schedule.typeName);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery);
             while(resultSet.next()) {
                 schedules.add(new TimeTable(
+                        resultSet.getInt("station_detail_id"),
                         resultSet.getInt("hour"),
                         resultSet.getInt("minute"),
                         resultSet.getString("week_type"),
                         resultSet.getString("schedule_name"),
-                        resultSet.getString("subway_type")
+                        resultSet.getString("subway_type"),
+                        resultSet.getInt("line_direction"),
+                        resultSet.getInt("line_id")
                 ));
             }
         } catch (ClassNotFoundException e) {
@@ -98,6 +103,37 @@ class databaseManager {
             System.out.println("DB 연결 에러");
         }
         return schedules;
+    }
+    public static TimeTable getOneScheduleDB(SubwayData parent, SubwayData child) {
+        TimeTable schedule = new TimeTable();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Statement stmt = conn.createStatement();
+            String strQuery;
+            strQuery = String.format("SELECT station_detail_id, line_direction, subway_type, week_type, schedule_name, hour, minute, line_id " +
+                            "FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND hour - %d <= 1 AND ((hour * 60 + minute) " +
+                            "- (%d * 60 + %d)) >= 0 AND week_type = \'%s\' AND line_direction = %d LIMIT 1",
+                    child.lineId, child.stationDetailId, parent.schedule.hour, parent.schedule.hour, parent.schedule.minute,
+                    parent.schedule.weekType, child.lineDirection, parent.schedule.typeName);
+            java.sql.ResultSet resultSet = stmt.executeQuery(strQuery);
+            while(resultSet.next()) {
+                schedule = new TimeTable(
+                        resultSet.getInt("station_detail_id"),
+                        resultSet.getInt("hour"),
+                        resultSet.getInt("minute"),
+                        resultSet.getString("week_type"),
+                        resultSet.getString("schedule_name"),
+                        resultSet.getString("subway_type"),
+                        resultSet.getInt("line_direction"),
+                        resultSet.getInt("line_id")
+                );
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("드라이버 로드 에러");
+        } catch (SQLException e) {
+            System.out.println("DB 연결 에러");
+        }
+        return schedule;
     }
 
     public static SubwayData getStationWithDetailIdDB(int stationDetailId) {
@@ -115,7 +151,9 @@ class databaseManager {
                         resultSet.getInt("station_detail_id"),
                         resultSet.getInt("line_id"),
                         resultSet.getInt("before_station"),
-                        resultSet.getInt("next_station")
+                        resultSet.getInt("next_station"),
+                        resultSet.getInt("express"),
+                        resultSet.getInt("special")
                 );
             }
         } catch (ClassNotFoundException e) {
