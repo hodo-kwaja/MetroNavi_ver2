@@ -70,7 +70,7 @@ public class MakeTree {
 
     /*public static void makeTree()
      * */
-    public static void makeTree() {
+    public static ArrayList<pathInfo>  makeTree() {
         while (true) {
             Node station = ScheduleManager.queue.poll();
             addChild(station, ScheduleManager.searchPossibleRoute(station), true);
@@ -83,7 +83,7 @@ public class MakeTree {
                     ScheduleManager.onePath(ScheduleManager.queue.poll());
                 }
             }
-            ScheduleManager.routeOrganization();    //경로 정리
+            return ScheduleManager.routeOrganization();    //경로 정리
         }
     }
 }
