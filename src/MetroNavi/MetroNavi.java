@@ -60,6 +60,17 @@ class SubwayData {
 
     SubwayData() {};
 
+    SubwayData(SubwayData SD1, SubwayData SD2, int DI) {
+        this.stationDetailId = SD1.stationDetailId;
+        this.schedule.stationDetailId = SD1.stationDetailId;
+        this.lineId = SD1.lineId;
+        this.schedule.line_id = SD1.lineId;
+        this.schedule.weekType = ScheduleManager.weekType;
+        this.schedule.typeName = SD2.schedule.typeName;
+        this.schedule.line_direction = DI;
+        this.lineDirection = DI;
+    }
+
     SubwayData(int SI, String SN, String SC, int SDI, int LI, int BS, int NS, int E, int S) {
         stationId = SI;
         stationName = SN;
@@ -84,7 +95,6 @@ class SubwayData {
     int express;
     int special;
     TimeTable schedule = new TimeTable();  //최적 시간표
-    ArrayList<TimeTable> candiSchedule = new ArrayList<>();   //후보 시간표
     boolean transfer = false;   //환승역 여부
     Transfer transferInfo = new Transfer(); //환승 정보
 }
@@ -106,10 +116,6 @@ class TimeTable {
 
     TimeTable() {}
 
-    TimeTable(int H, int M) {
-        this.hour = H;
-        this.minute = M;
-    }
     TimeTable(int SDI, int H, int M, String WT, String SN, String TN, int LD, int LI) {
         this.stationDetailId = SDI;
         this.hour = H;
@@ -147,7 +153,7 @@ class pathInfo {
 
 public class MetroNavi {
     /*public static void ininialize()
-    * 입력 받기*/
+     * 입력 받기*/
     public static void initialize() {
         MakeTree mk = new MakeTree();
         ScheduleManager sm = new ScheduleManager();
@@ -161,10 +167,10 @@ public class MetroNavi {
         ScheduleManager.weekType = input.next();
         mk.initRoot();  //root노드 초기화
         sm.searchDstLineNum();  //도착역 호선 탐색
-        }
+    }
 
     /*psvm
-    * 메인 메서드*/
+     * 메인 메서드*/
     public static void main(String[] args) {
         MakeTree mk = new MakeTree();
         databaseManager.connectDatabase();  //DB 연결
@@ -176,3 +182,4 @@ public class MetroNavi {
         pathInfo lowCongestPath = new pathInfo();   //덜 혼잡
     }
 }
+
