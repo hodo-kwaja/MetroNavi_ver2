@@ -1,5 +1,6 @@
 package MetroNavi;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class TimeAndDate {
@@ -23,6 +24,18 @@ public class TimeAndDate {
         return str;
     }
 
+    public static void calcEndTime(SubwayData parent, SubwayData child, TimeTable start, TimeTable finish) {
+        int duration = convertTimeToScore(finish.hour, finish.minute) - convertTimeToScore(start.hour, start.minute);
+        int hour = parent.schedule.hour;
+        int minute = parent.schedule.minute + duration;
+
+        if(minute >= 60) {
+            hour++;
+            minute -= 60;
+        }
+        child.schedule.hour = hour;
+        child.schedule.minute = minute;
+    }
 
 }
 
