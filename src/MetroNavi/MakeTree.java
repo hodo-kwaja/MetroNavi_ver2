@@ -75,7 +75,7 @@ public class MakeTree {
             Node station = ScheduleManager.queue.poll();
             addChild(station, ScheduleManager.searchPossibleRoute(station), true);
             long start = System.currentTimeMillis();
-            long end = start + 1 * 1500;
+            long end = start + 2000;
             while (System.currentTimeMillis() < end) {  //1.5초 실행
                 if(!ScheduleManager.priorQ.isEmpty()) { //도착역과 같은 호선
                     ScheduleManager.onePath(ScheduleManager.priorQ.poll());
@@ -83,7 +83,7 @@ public class MakeTree {
                     ScheduleManager.onePath(ScheduleManager.queue.poll());
                 }
             }
-            return ScheduleManager.routeOrganization();    //경로 정리
+            return ScheduleManager.routeOrganization(ScheduleManager.path);    //경로 정리
         }
     }
 }
