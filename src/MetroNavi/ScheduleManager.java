@@ -16,26 +16,13 @@ public class ScheduleManager {
     static Queue<Node> priorQ = new LinkedList<>();    //도착역과 호선이 같은 경로
     static ArrayList<Stack<SubwayData>> finalPath = new ArrayList<>();  //최종 도출 경로
 
-    /*public static void updateSchedule(SubwayData station)
-     * candiSchedule에서 시간이 가장 빠른 것을 schedule로 결정*/
-    public static void updateSchedule(SubwayData station) {
-        int score = 9999;
-        TimeTable schedule = null;
-        for (TimeTable sch : station.candiSchedule) {
-            if (score > TimeAndDate.convertTimeToScore(sch.hour, sch.minute)) {  //가장 도착 시간이 빠른 것
-                score = TimeAndDate.convertTimeToScore(sch.hour, sch.minute);
-                schedule = sch;
-            }
-        }
-        station.schedule = schedule;
-    }
 
     public static SubwayData giveMe(TimeTable TT) {
         ArrayList<SubwayData> subs = databaseManager.getSubLineNameInfoDB(TT.scheduleName);
         SubwayData result = new SubwayData();
-        for(SubwayData SD : subs) {
-            if(SD.lineId == TT.line_id) {
-                result =  SD;
+        for (SubwayData SD : subs) {
+            if (SD.lineId == TT.line_id) {
+                result = SD;
             }
         }
         return result;
@@ -47,7 +34,7 @@ public class ScheduleManager {
         TimeTable newSchedule = new TimeTable();
         SubwayData transtation = databaseManager.getStationWithDetailIdDB(SDI);
 
-        for(int i = 0; i < schedules.size(); i++) {
+        for (int i = 0; i < schedules.size(); i++) {
             TimeTable TT = schedules.get(i);
 
             if (TT.line_direction == 0) {    //하행
@@ -56,8 +43,8 @@ public class ScheduleManager {
                     SubwayData sub = giveMe(TT);
                     int result = sub.stationCode.compareTo(transtation.stationCode);
 
-                    if (TT.typeName.equals("E")) {
-                        if(transtation.express == 1) {
+                    if (TT.typeName.equals("S")) {  //급행
+                        if (transtation.express == 1) {
                             if (transtation.stationCode.contains("P")) {    //신촌, 서울역
                                 if (TT.scheduleName.equals("서울역")) {
                                     newSchedule = TT;
@@ -70,9 +57,7 @@ public class ScheduleManager {
                                 }
                             }
                         }
-                    }
-
-                    else {
+                    } else {
                         if (transtation.stationCode.contains("P")) {    //신촌, 서울역
                             if (TT.scheduleName.equals("서울역")) {
                                 newSchedule = TT;
@@ -85,11 +70,12 @@ public class ScheduleManager {
                             }
                         }
                     }
-                }
-
-                else {
-                    if (TT.typeName.equals("E")) {  //급행
-                        if(transtation.express == 1) {
+                } else if (TT.line_id == 2) {  //2호선
+                    newSchedule = TT;
+                    break;
+                } else {
+                    if (TT.typeName.equals("S")) {  //급행
+                        if (transtation.express == 1) {
                             SubwayData sub = giveMe(TT);
                             int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -98,10 +84,8 @@ public class ScheduleManager {
                                 break;
                             }
                         }
-                    }
-
-                    else if (TT.typeName.equals("S")) { //특급
-                        if(transtation.special == 1) {
+                    } else if (TT.typeName.equals("E")) { //특급
+                        if (transtation.special == 1) {
                             SubwayData sub = giveMe(TT);
                             int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -110,9 +94,7 @@ public class ScheduleManager {
                                 break;
                             }
                         }
-                    }
-
-                    else {
+                    } else {
                         SubwayData sub = giveMe(TT);
                         int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -122,12 +104,10 @@ public class ScheduleManager {
                         }
                     }
                 }
-            }
-
-            else {  //상행
-                if(TT.line_id == 104) { //경의중앙
-                    if (TT.typeName.equals("E")) {  //급행
-                        if(transtation.express == 1) {
+            } else {  //상행
+                if (TT.line_id == 104) { //경의중앙
+                    if (TT.typeName.equals("S")) {  //급형
+                        if (transtation.express == 1) {
                             SubwayData sub = giveMe(TT);
                             int result = sub.stationCode.compareTo(transtation.stationCode);
                             if (result >= 0 && !sub.stationCode.contains("P")) {
@@ -135,9 +115,7 @@ public class ScheduleManager {
                                 break;
                             }
                         }
-                    }
-
-                    else {
+                    } else {
                         SubwayData sub = giveMe(TT);
                         int result = sub.stationCode.compareTo(transtation.stationCode);
                         if (result >= 0 && !sub.stationCode.contains("P")) {
@@ -145,11 +123,12 @@ public class ScheduleManager {
                             break;
                         }
                     }
-                }
-
-                else {
-                    if (TT.typeName.equals("E")) {  //급행
-                        if(transtation.express == 1) {
+                } else if (TT.line_id == 2) {  //2호선
+                    newSchedule = TT;
+                    break;
+                } else {
+                    if (TT.typeName.equals("E")) {  //특급
+                        if (transtation.special == 1) {
                             SubwayData sub = giveMe(TT);
                             int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -158,10 +137,8 @@ public class ScheduleManager {
                                 break;
                             }
                         }
-                    }
-
-                    else if (TT.typeName.equals("S")) { //특급
-                        if(transtation.special == 1) {
+                    } else if (TT.typeName.equals("S")) { //급행
+                        if (transtation.express == 1) {
                             SubwayData sub = giveMe(TT);
                             int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -170,9 +147,7 @@ public class ScheduleManager {
                                 break;
                             }
                         }
-                    }
-
-                    else {
+                    } else {
                         SubwayData sub = giveMe(TT);
                         int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -190,30 +165,29 @@ public class ScheduleManager {
     /*public static void updatePathInfo(SubwayData parent, SubwayData child)
      * 경로 정보 업데이트*/
     public static void updatePathInfo(SubwayData parent, SubwayData child) {
-            child.schedule.numStep = parent.schedule.numStep + 1;   //경유역 수
-            child.schedule.transferNum = parent.schedule.transferNum;   //환승 수
-            child.schedule.duration = TimeAndDate.convertTimeToScore(child.schedule.hour, child.schedule.minute)
-                    - TimeAndDate.convertTimeToScore(parent.schedule.hour, parent.schedule.minute);    //소요시간
+        child.schedule.numStep = parent.schedule.numStep + 1;   //경유역 수
+        child.schedule.transferNum = parent.schedule.transferNum;   //환승 수
+        child.schedule.duration = TimeAndDate.convertTimeToScore(child.schedule.hour, child.schedule.minute)
+                - TimeAndDate.convertTimeToScore(parent.schedule.hour, parent.schedule.minute);    //소요시간
     }
 
     /*public static void updateCongest(SubwayData child)
      * 혼잡도 가져오기*/
     public static void updateCongest(SubwayData station) {
-        for (TimeTable tt : station.candiSchedule) {
-            String time = TimeAndDate.conver30Time(tt.hour, tt.minute); //30분 단위로 시간 끊기
-            tt.congest = databaseManager.getCongestDB(time, station);   //혼잡도 가져오기
+        TimeTable tt = station.schedule;
+        String time = TimeAndDate.conver30Time(tt.hour, tt.minute); //30분 단위로 시간 끊기
+        tt.congest = databaseManager.getCongestDB(time, station);   //혼잡도 가져오기
 
-            if (tt.congest != 0.0) {
-                if (tt.congest >= 80.0) {
-                    tt.congestScore = 3;   //매우 혼잡
-                } else if (tt.congest >= 50.0 && tt.congest < 80.0) {
-                    tt.congestScore = 2;   //보통
-                } else if (tt.congest < 50.0) {
-                    tt.congestScore = 1;   //원활
-                }
-            } else {
-                tt.congestScore = 0;   //결과 없음
+        if (tt.congest != 0.0) {
+            if (tt.congest >= 80.0) {
+                tt.congestScore = 3;   //매우 혼잡
+            } else if (tt.congest >= 50.0 && tt.congest < 80.0) {
+                tt.congestScore = 2;   //보통
+            } else if (tt.congest < 50.0) {
+                tt.congestScore = 1;   //원활
             }
+        } else {
+            tt.congestScore = 0;   //결과 없음
         }
     }
 
@@ -274,8 +248,7 @@ public class ScheduleManager {
                             r.transfer = true;
                             station.data.transfer = true;
                             transfer = true;
-                        }
-                        else {
+                        } else {
                             r.transferNum = parent.data.transferNum;
                             r.beforeStation = 0;
                             newRoute.add(r);
@@ -469,8 +442,8 @@ public class ScheduleManager {
     }
 
     /*public static void routeOrganization()
-    * 경로 정리해서 stack에 담음*/
-    public static ArrayList<pathInfo> routeOrganization(){
+     * 경로 정리해서 stack에 담음*/
+    public static ArrayList<pathInfo> routeOrganization(ArrayList<Node> path) {
         ArrayList<Stack<Integer>> transNum = new ArrayList<>();
         for (Node dst : path) {
             Stack<SubwayData> path1 = new Stack<>();
@@ -479,12 +452,15 @@ public class ScheduleManager {
             transnum.push(station.data.stationDetailId);
             while (station.parentNode != null) {
                 if (!station.step.isEmpty()) {
-                    while (!station.step.isEmpty()) {
+                    Stack<SubwayData> temp = new Stack<>();
+                    temp.addAll(station.step);
+                    while (!station.step.isEmpty()) {   //
                         SubwayData tmp = station.step.pop();
                         path1.push(tmp);
                     }
+                    station.step.addAll(temp);
                 }
-                if(station.data.transfer) {
+                if (station.data.transfer && station.data.transferInfo.timeSec != 0) {
                     transnum.push(station.data.stationDetailId);
                 }
                 path1.push(station.data);
@@ -497,33 +473,48 @@ public class ScheduleManager {
     }
 
     /*public void addTimeline()
-    * 경로에 시간표 추가*/
+     * 경로에 시간표 추가*/
     public static ArrayList<pathInfo> addTimeLine(ArrayList<Stack<Integer>> transNum) {
         ArrayList<pathInfo> pathInfos = new ArrayList<>();
         SubwayData root = MakeTree.root.data;
-        for(int i = 0; i < finalPath.size(); i++) {
+        for (int i = 0; i < finalPath.size(); i++) {
             Stack<SubwayData> finalroute = finalPath.get(i);    //경로 n번
             Stack<Integer> transtation = transNum.get(i);   //통과역 n번
             pathInfo info1 = new pathInfo();
             SubwayData prev = root; //이번 역
-            while(!finalroute.isEmpty()) {
+            int count = 0;
+            while (!finalroute.isEmpty()) {
                 SubwayData station = finalroute.pop();
-                if(station.transfer || prev == root) {
+                if ((station.transfer && station.transferInfo.timeSec == 0) || prev == root) {  //출발역 or 환승역
                     station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station), transtation.pop());
-                }
-                else {
+                    info1.transferNum++;
+                } else {  //그 외 역
                     station.schedule = databaseManager.getOneScheduleDB(prev, station);
-                    if(station.schedule.line_id == 0) {
-                        continue;
+                    if (station.schedule.line_id == 0) {
+                        if(finalroute.isEmpty()) {  //끝 역 도착시간
+                            getEndTime(prev, station);
+                        }
+                        else { //급행 시간표일 때 일반역 패스
+                            continue;
+                        }
                     }
                 }
                 info1.path.offer(station);
                 updatePathInfo(prev, station);  //경로 정보 업데이트
                 updateCongest(station); //혼잡도 업데이트
+                if(station.schedule.congest != 0.0) {
+                    count++;
+                    info1.congest += station.schedule.congest;
+                }
+                info1.stepNum++;
+                info1.duration += station.schedule.duration;
                 prev = station;
             }
+            if(count != 0) {
+                info1.congest = info1.congest / (double) count;
+            }
+            info1.transferNum -= 1;
             pathInfos.add(info1);
-            System.out.println("hello");
         }
         return pathInfos;
     }
@@ -532,4 +523,22 @@ public class ScheduleManager {
     public static void getTransferInfo(SubwayData start, SubwayData finish) {
         databaseManager.getTransferInfoDB(start, finish);
     }
+
+    public static void getEndTime(SubwayData parent, SubwayData child) {
+        if (parent.schedule.line_direction == 1) {
+            SubwayData start = new SubwayData(parent, child, 0);
+            SubwayData finish = new SubwayData(child, parent, 0);
+            databaseManager.getEndScheduleDB(start);
+            finish.schedule =  databaseManager.getOneScheduleDB(start, finish);
+            TimeAndDate.calcEndTime(parent, child, start.schedule, finish.schedule);
+        }
+        else {
+            SubwayData start = new SubwayData(child, parent, 1);
+            SubwayData finish = new SubwayData(parent, child, 1);
+            databaseManager.getEndScheduleDB(start);
+            finish.schedule = databaseManager.getOneScheduleDB(start, finish);
+            TimeAndDate.calcEndTime(parent, child, start.schedule, finish.schedule);
+        }
+    }
 }
+
