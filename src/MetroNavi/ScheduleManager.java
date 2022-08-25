@@ -1,5 +1,6 @@
 package MetroNavi;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.sql.Time;
 import java.util.*;
 
@@ -73,6 +74,36 @@ public class ScheduleManager {
                 } else if (TT.line_id == 2) {  //2호선
                     newSchedule = TT;
                     break;
+                } else if(TT.line_id == 9) {    //9호선
+                    if (TT.typeName.equals("S")) {  //급행
+                        if (transtation.express == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    } else if (TT.typeName.equals("E")) { //특급
+                        if (transtation.special == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    } else {
+                        SubwayData sub = giveMe(TT);
+                        int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                        if (result <= 0) {
+                            newSchedule = TT;
+                            break;
+                        }
+                    }
                 } else {
                     if (TT.typeName.equals("S")) {  //급행
                         if (transtation.express == 1) {
@@ -104,6 +135,8 @@ public class ScheduleManager {
                         }
                     }
                 }
+
+
             } else {  //상행
                 if (TT.line_id == 104) { //경의중앙
                     if (TT.typeName.equals("S")) {  //급형
@@ -126,6 +159,36 @@ public class ScheduleManager {
                 } else if (TT.line_id == 2) {  //2호선
                     newSchedule = TT;
                     break;
+                } else if(TT.line_id == 9) {  //9호선
+                    if (TT.typeName.equals("S")) {  //급행
+                        if (transtation.express == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    } else if (TT.typeName.equals("E")) { //특급
+                        if (transtation.special == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                            if (result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    } else {
+                        SubwayData sub = giveMe(TT);
+                        int result = sub.stationCode.compareTo(transtation.stationCode);
+
+                        if (result >= 0) {
+                            newSchedule = TT;
+                            break;
+                        }
+                    }
                 } else {
                     if (TT.typeName.equals("E")) {  //특급
                         if (transtation.special == 1) {
@@ -443,7 +506,7 @@ public class ScheduleManager {
 
     /*public static void routeOrganization()
      * 경로 정리해서 stack에 담음*/
-    public static ArrayList<pathInfo> routeOrganization(ArrayList<Node> path) {
+    public static ArrayList<pathInfo> routeOrganization() {
         ArrayList<Stack<Integer>> transNum = new ArrayList<>();
         for (Node dst : path) {
             Stack<SubwayData> path1 = new Stack<>();
@@ -478,6 +541,7 @@ public class ScheduleManager {
         ArrayList<pathInfo> pathInfos = new ArrayList<>();
         SubwayData root = MakeTree.root.data;
         for (int i = 0; i < finalPath.size(); i++) {
+            long start = System.currentTimeMillis();
             Stack<SubwayData> finalroute = finalPath.get(i);    //경로 n번
             Stack<Integer> transtation = transNum.get(i);   //통과역 n번
             pathInfo info1 = new pathInfo();
@@ -501,6 +565,9 @@ public class ScheduleManager {
                 }
                 info1.path.offer(station);
                 updatePathInfo(prev, station);  //경로 정보 업데이트
+                if(prev == root) {
+                    station.schedule.duration = 0;
+                }
                 updateCongest(station); //혼잡도 업데이트
                 if(station.schedule.congest != 0.0) {
                     count++;
@@ -514,20 +581,26 @@ public class ScheduleManager {
                 info1.congest = info1.congest / (double) count;
             }
             info1.transferNum -= 1;
+            info1.stepNum -=1;
             pathInfos.add(info1);
+            long finish = System.currentTimeMillis() - start;
+            System.out.println(finish);
         }
         return pathInfos;
     }
 
-
+    /*public static void getTransferInfo(SubwayData start, SubwayData finish)
+    * 환승 정보 가져옴*/
     public static void getTransferInfo(SubwayData start, SubwayData finish) {
         databaseManager.getTransferInfoDB(start, finish);
     }
 
+    /*public static void getEndTime(SubwayData parent, SubwayData child)
+    * 도착 시간 계산*/
     public static void getEndTime(SubwayData parent, SubwayData child) {
         if (parent.schedule.line_direction == 1) {
-            SubwayData start = new SubwayData(parent, child, 0);
-            SubwayData finish = new SubwayData(child, parent, 0);
+            SubwayData start = new SubwayData(child, parent, 0);
+            SubwayData finish = new SubwayData(parent, child, 0);
             databaseManager.getEndScheduleDB(start);
             finish.schedule =  databaseManager.getOneScheduleDB(start, finish);
             TimeAndDate.calcEndTime(parent, child, start.schedule, finish.schedule);
