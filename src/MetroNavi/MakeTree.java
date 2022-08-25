@@ -83,7 +83,7 @@ public class MakeTree {
                     ScheduleManager.onePath(ScheduleManager.queue.poll());
                 }
             }
-            return ScheduleManager.routeOrganization(ScheduleManager.path);    //경로 정리
+            return ScheduleManager.routeOrganization();    //경로 정리
         }
     }
 }
