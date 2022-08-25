@@ -61,6 +61,7 @@ class SubwayData {
     SubwayData() {};
 
     SubwayData(SubwayData SD1, SubwayData SD2, int DI) {
+        this.stationName = SD1.stationName;
         this.stationDetailId = SD1.stationDetailId;
         this.schedule.stationDetailId = SD1.stationDetailId;
         this.lineId = SD1.lineId;
