@@ -22,7 +22,7 @@ public class ScheduleManager {
         ArrayList<SubwayData> subs = databaseManager.getSubLineNameInfoDB(TT.scheduleName);
         SubwayData result = new SubwayData();
         for (SubwayData SD : subs) {
-            if (SD.lineId == TT.line_id) {
+            if (SD.lineId == TT.lineId) {
                 result = SD;
             }
         }
@@ -38,9 +38,9 @@ public class ScheduleManager {
         for (int i = 0; i < schedules.size(); i++) {
             TimeTable TT = schedules.get(i);
 
-            if (TT.line_direction == 0) {    //하행
+            if (TT.lineDirection == 0) {    //하행
 
-                if (TT.line_id == 104) { //경의중앙
+                if (TT.lineId == 104) { //경의중앙
                     SubwayData sub = giveMe(TT);
                     int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -71,10 +71,10 @@ public class ScheduleManager {
                             }
                         }
                     }
-                } else if (TT.line_id == 2) {  //2호선
+                } else if (TT.lineId == 2) {  //2호선
                     newSchedule = TT;
                     break;
-                } else if(TT.line_id == 9) {    //9호선
+                } else if(TT.lineId == 9) {    //9호선
                     if (TT.typeName.equals("S")) {  //급행
                         if (transtation.express == 1) {
                             SubwayData sub = giveMe(TT);
@@ -138,7 +138,7 @@ public class ScheduleManager {
 
 
             } else {  //상행
-                if (TT.line_id == 104) { //경의중앙
+                if (TT.lineId == 104) { //경의중앙
                     if (TT.typeName.equals("S")) {  //급형
                         if (transtation.express == 1) {
                             SubwayData sub = giveMe(TT);
@@ -156,10 +156,10 @@ public class ScheduleManager {
                             break;
                         }
                     }
-                } else if (TT.line_id == 2) {  //2호선
+                } else if (TT.lineId == 2) {  //2호선
                     newSchedule = TT;
                     break;
-                } else if(TT.line_id == 9) {  //9호선
+                } else if(TT.lineId == 9) {  //9호선
                     if (TT.typeName.equals("S")) {  //급행
                         if (transtation.express == 1) {
                             SubwayData sub = giveMe(TT);
@@ -228,7 +228,12 @@ public class ScheduleManager {
     /*public static void updatePathInfo(SubwayData parent, SubwayData child)
      * 경로 정보 업데이트*/
     public static void updatePathInfo(SubwayData parent, SubwayData child) {
-        child.schedule.numStep = parent.schedule.numStep + 1;   //경유역 수
+        if(parent.stationName.equals(child.stationName)) {
+            child.schedule.numStep = parent.schedule.numStep;
+        }
+        else {
+            child.schedule.numStep = parent.schedule.numStep + 1;   //경유역 수
+        }
         child.schedule.transferNum = parent.schedule.transferNum;   //환승 수
         child.schedule.duration = TimeAndDate.convertTimeToScore(child.schedule.hour, child.schedule.minute)
                 - TimeAndDate.convertTimeToScore(parent.schedule.hour, parent.schedule.minute);    //소요시간
@@ -554,7 +559,7 @@ public class ScheduleManager {
                     info1.transferNum++;
                 } else {  //그 외 역
                     station.schedule = databaseManager.getOneScheduleDB(prev, station);
-                    if (station.schedule.line_id == 0) {
+                    if (station.schedule.lineId == 0) {
                         if(finalroute.isEmpty()) {  //끝 역 도착시간
                             getEndTime(prev, station);
                         }
@@ -598,7 +603,7 @@ public class ScheduleManager {
     /*public static void getEndTime(SubwayData parent, SubwayData child)
     * 도착 시간 계산*/
     public static void getEndTime(SubwayData parent, SubwayData child) {
-        if (parent.schedule.line_direction == 1) {
+        if (parent.schedule.lineDirection == 1) {
             SubwayData start = new SubwayData(child, parent, 0);
             SubwayData finish = new SubwayData(parent, child, 0);
             databaseManager.getEndScheduleDB(start);
