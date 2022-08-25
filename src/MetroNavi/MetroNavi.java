@@ -149,7 +149,7 @@ class pathInfo {
     int stepNum;    //정류장 수
     int duration;   //소요 시간
     double congest;  //혼잡도
-    Queue<SubwayData> path = new LinkedList<>(); //경로
+    ArrayList<SubwayData> path = new ArrayList<>(); //경로
 }
 
 public class MetroNavi {
@@ -168,28 +168,6 @@ public class MetroNavi {
         ScheduleManager.weekType = input.next();
         mk.initRoot();  //root노드 초기화
         sm.searchDstLineNum();  //도착역 호선 탐색
-    }
-
-    public static int[] selectPath(ArrayList<pathInfo> paths) {
-        int[] idx = new int[3];     //0:시간, 1:혼잡, 2:환승
-        int bestTime = 99999;
-        int bestCongest = 99999;
-        int bestTransfer = 99999;
-        for(int i = 0; i < paths.size(); i++) {
-            pathInfo PI = paths.get(i);
-            if(PI.duration < bestTime) {
-                idx[0] = i;
-            }
-            if(PI.congest != 0) {
-                if (PI.congest < bestCongest) {
-                    idx[1] = i;
-                }
-            }
-            if(PI.transferNum < bestTransfer) {
-                idx[2] = i;
-            }
-        }
-        return idx;
     }
     /*psvm
      * 메인 메서드*/
@@ -210,6 +188,8 @@ public class MetroNavi {
             }
         });
         pathInfo shcrtestPath = pathInfos.get(0);
+
+        MakeJson.ShortestPath(shcrtestPath);
         Collections.sort(pathInfos, new Comparator<pathInfo>() {
             @Override
             public int compare(pathInfo o1, pathInfo o2) {
@@ -221,8 +201,8 @@ public class MetroNavi {
                 }
             }
         });
-
-        pathInfo minTransferPath = pathInfos.get(0);
+        pathInfo lowTransferPath = pathInfos.get(0);
+        MakeJson.LowTransferPath(lowTransferPath);
     }
 }
 
