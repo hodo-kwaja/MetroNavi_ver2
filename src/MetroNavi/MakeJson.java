@@ -32,7 +32,7 @@ public class MakeJson {
             schedule.addProperty("numStep", temp.schedule.numStep);
 
             JsonObject transfer = new JsonObject();
-            transfer.addProperty("transferNum", temp.transferInfo.transferNum);
+            transfer.addProperty("transferNum", temp.transferNum);
             transfer.addProperty("isTransfer", temp.transfer);
             transfer.addProperty("transferDistance", temp.transferInfo.distance);
             transfer.addProperty("transferTime", temp.transferInfo.timeSec);
@@ -82,7 +82,7 @@ public class MakeJson {
             schedule.addProperty("numStep", temp.schedule.numStep);
 
             JsonObject transfer = new JsonObject();
-            transfer.addProperty("transferNum", temp.transferInfo.transferNum);
+            transfer.addProperty("transferNum", temp.transferNum);
             transfer.addProperty("isTransfer", temp.transfer);
             transfer.addProperty("transferDistance", temp.transferInfo.distance);
             transfer.addProperty("transferTime", temp.transferInfo.timeSec);
