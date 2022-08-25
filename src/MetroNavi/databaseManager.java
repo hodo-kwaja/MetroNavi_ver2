@@ -207,7 +207,7 @@ class databaseManager {
             Class.forName("com.mysql.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery1 = String.format("SELECT * FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND line_direction = %d AND week_type = \"%s\" AND subway_type = \"%s\" AND hour >= 5 LIMIT 1",
-                    station.schedule.line_id, station.schedule.stationDetailId, station.schedule.line_direction, station.schedule.weekType, station.schedule.typeName);
+                    station.schedule.lineId, station.schedule.stationDetailId, station.schedule.lineDirection, station.schedule.weekType, station.schedule.typeName);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
             while(resultSet.next()) {
                 station.schedule.hour = resultSet.getInt("hour");
