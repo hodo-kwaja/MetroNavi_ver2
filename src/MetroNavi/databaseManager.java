@@ -83,7 +83,7 @@ class databaseManager {
                             "FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND hour - %d <= 1 AND ((hour * 60 + minute) " +
                             "- (%d * 60 + %d)) >= 0 AND week_type = \'%s\' AND line_direction = %d LIMIT 5",
                     child.lineId, child.stationDetailId, parent.schedule.hour, parent.schedule.hour, parent.schedule.minute,
-                    parent.schedule.weekType, child.lineDirection, parent.schedule.typeName);
+                    parent.schedule.weekType, child.lineDirection);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery);
             while(resultSet.next()) {
                 schedules.add(new TimeTable(
@@ -112,9 +112,9 @@ class databaseManager {
             String strQuery;
             strQuery = String.format("SELECT station_detail_id, line_direction, subway_type, week_type, schedule_name, hour, minute, line_id " +
                             "FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND hour - %d <= 1 AND ((hour * 60 + minute) " +
-                            "- (%d * 60 + %d)) >= 0 AND week_type = \'%s\' AND line_direction = %d AND subway_type = \'%s\' LIMIT 1",
+                            "- (%d * 60 + %d)) >= 0 AND week_type = \'%s\' AND line_direction = %d AND subway_type = \'%s\' AND schedule_name = \'%s\' LIMIT 1",
                     child.lineId, child.stationDetailId, parent.schedule.hour, parent.schedule.hour, parent.schedule.minute,
-                    parent.schedule.weekType, child.lineDirection, parent.schedule.typeName);
+                    parent.schedule.weekType, child.lineDirection, parent.schedule.typeName, parent.schedule.scheduleName);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery);
             while(resultSet.next()) {
                 schedule = new TimeTable(
@@ -212,6 +212,7 @@ class databaseManager {
             while(resultSet.next()) {
                 station.schedule.hour = resultSet.getInt("hour");
                 station.schedule.minute = resultSet.getInt("minute");
+                station.schedule.scheduleName = resultSet.getString("schedule_name");
             }
         } catch (ClassNotFoundException e) {
             System.out.println("드라이버 로드 에러");
