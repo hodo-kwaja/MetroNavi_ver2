@@ -65,10 +65,10 @@ class SubwayData {
         this.stationDetailId = SD1.stationDetailId;
         this.schedule.stationDetailId = SD1.stationDetailId;
         this.lineId = SD1.lineId;
-        this.schedule.line_id = SD1.lineId;
+        this.schedule.lineId = SD1.lineId;
         this.schedule.weekType = ScheduleManager.weekType;
         this.schedule.typeName = SD2.schedule.typeName;
-        this.schedule.line_direction = DI;
+        this.schedule.lineDirection = DI;
         this.lineDirection = DI;
     }
 
@@ -124,8 +124,8 @@ class TimeTable {
         this.weekType = WT;
         this.scheduleName = SN;
         this.typeName = TN;
-        this.line_direction = LD;
-        this.line_id = LI;
+        this.lineDirection = LD;
+        this.lineId = LI;
     }
     int stationDetailId;
     int hour = 0;   //출발 시각(시)
@@ -134,8 +134,8 @@ class TimeTable {
     String scheduleName;    //종착 지점
     String typeName;    //열차 종류
 
-    int line_id;
-    int line_direction;
+    int lineId;
+    int lineDirection;
     int duration = 0;   //소요 시간
     int transferNum = 0;    //환승 횟수
     int numStep = 0;    //정류장 수
@@ -170,6 +170,27 @@ public class MetroNavi {
         sm.searchDstLineNum();  //도착역 호선 탐색
     }
 
+    public static int[] selectPath(ArrayList<pathInfo> paths) {
+        int[] idx = new int[3];     //0:시간, 1:혼잡, 2:환승
+        int bestTime = 99999;
+        int bestCongest = 99999;
+        int bestTransfer = 99999;
+        for(int i = 0; i < paths.size(); i++) {
+            pathInfo PI = paths.get(i);
+            if(PI.duration < bestTime) {
+                idx[0] = i;
+            }
+            if(PI.congest != 0) {
+                if (PI.congest < bestCongest) {
+                    idx[1] = i;
+                }
+            }
+            if(PI.transferNum < bestTransfer) {
+                idx[2] = i;
+            }
+        }
+        return idx;
+    }
     /*psvm
      * 메인 메서드*/
     public static void main(String[] args) {
@@ -177,10 +198,31 @@ public class MetroNavi {
         databaseManager.connectDatabase();  //DB 연결
         initialize();
         ArrayList<pathInfo> pathInfos = MakeTree.makeTree();
+        Collections.sort(pathInfos, new Comparator<pathInfo>() {
+            @Override
+            public int compare(pathInfo o1, pathInfo o2) {
+                if(o1.duration == o2.duration) {
+                    return o1.transferNum - o2.transferNum;
+                }
+                else {
+                    return o1.duration - o2.duration;
+                }
+            }
+        });
+        pathInfo shcrtestPath = pathInfos.get(0);
+        Collections.sort(pathInfos, new Comparator<pathInfo>() {
+            @Override
+            public int compare(pathInfo o1, pathInfo o2) {
+                if(o1.transferNum == o2.transferNum) {
+                    return o1.duration - o2.duration;
+                }
+                else {
+                    return o1.transferNum - o2.transferNum;
+                }
+            }
+        });
 
-        pathInfo shcrtestPath = new pathInfo(); //최소 시간
-        pathInfo minTransferPath = new pathInfo();  //최소 환승
-        pathInfo lowCongestPath = new pathInfo();   //덜 혼잡
+        pathInfo minTransferPath = pathInfos.get(0);
     }
 }
 
