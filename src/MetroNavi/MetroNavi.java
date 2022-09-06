@@ -187,9 +187,9 @@ public class MetroNavi {
                 }
             }
         });
-        pathInfo shcrtestPath = pathInfos.get(0);
+        pathInfo shortestPath = pathInfos.get(0);
 
-        MakeJson.ShortestPath(shcrtestPath);
+        MakeJson.ShortestPath(shortestPath);
         Collections.sort(pathInfos, new Comparator<pathInfo>() {
             @Override
             public int compare(pathInfo o1, pathInfo o2) {
