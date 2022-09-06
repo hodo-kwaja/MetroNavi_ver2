@@ -18,6 +18,8 @@ public class ScheduleManager {
     static ArrayList<Stack<SubwayData>> finalPath = new ArrayList<>();  //최종 도출 경로
 
 
+    /*public static SubwayData giveMe(TimeTable TT)
+    * TT의 scheduleName의 역 정보 가져오기*/
     public static SubwayData giveMe(TimeTable TT) {
         ArrayList<SubwayData> subs = databaseManager.getSubLineNameInfoDB(TT.scheduleName);
         SubwayData result = new SubwayData();
@@ -39,8 +41,7 @@ public class ScheduleManager {
             TimeTable TT = schedules.get(i);
 
             if (TT.lineDirection == 0) {    //하행
-
-                if (TT.lineId == 104) { //경의중앙
+                if (TT.lineId == 108) { //경의중
                     SubwayData sub = giveMe(TT);
                     int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -104,6 +105,49 @@ public class ScheduleManager {
                             break;
                         }
                     }
+                } else if(TT.lineId == 104) {
+                    if(TT.typeName.equals("S")) { //급행
+                        if(transtation.express == 1) {
+                            SubwayData sub = giveMe(TT);
+                            if(transtation.stationCode.contains("P")) {
+                                if(sub.stationName.equals("서울역")) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            }
+
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+                            if(transtation.stationCode.contains("K3")) {
+                                if(result <= 0) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            }
+                            if(transtation.stationCode.contains("K1")) {
+                                if(result >= 0) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        SubwayData sub = giveMe(TT);
+                        int result = sub.stationCode.compareTo(transtation.stationCode);
+                        if(sub.stationCode.contains("K3")) {
+                            if(result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                        if(sub.stationCode.contains("K1")) {
+                            if(result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                    }
+
                 } else {
                     if (TT.typeName.equals("S")) {  //급행
                         if (transtation.express == 1) {
@@ -138,7 +182,7 @@ public class ScheduleManager {
 
 
             } else {  //상행
-                if (TT.lineId == 104) { //경의중앙
+                if (TT.lineId == 108) { //경춘선
                     if (TT.typeName.equals("S")) {  //급형
                         if (transtation.express == 1) {
                             SubwayData sub = giveMe(TT);
@@ -189,6 +233,58 @@ public class ScheduleManager {
                             break;
                         }
                     }
+                } else if(TT.lineId == 104) {
+                    if(TT.typeName.equals("S")) { //급행
+                        if(transtation.express == 1) {
+                            SubwayData sub = giveMe(TT);
+                            int result = sub.stationCode.compareTo(transtation.stationCode);
+                            if(transtation.stationCode.contains("K3")) {
+                                if(result >= 0) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            }
+                            if(transtation.stationCode.contains("K1")) {
+                                if (sub.stationCode.contains("K1")) {
+                                    if (result <= 0) {
+                                        newSchedule = TT;
+                                        break;
+                                    }
+                                }
+                                else {
+                                    if(result >= 0) {
+                                        newSchedule = TT;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        SubwayData sub = giveMe(TT);
+                        int result = sub.stationCode.compareTo(transtation.stationCode);
+                        if(sub.stationCode.contains("K3")) {
+                            if(result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                        if(sub.stationCode.contains("K1")) {
+                            if (transtation.stationCode.contains("K1")) {
+                                if (result <= 0) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            }
+                            else {
+                                if(result >= 0) {
+                                    newSchedule = TT;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
                 } else {
                     if (TT.typeName.equals("E")) {  //특급
                         if (transtation.special == 1) {
@@ -546,6 +642,9 @@ public class ScheduleManager {
         ArrayList<pathInfo> pathInfos = new ArrayList<>();
         SubwayData root = MakeTree.root.data;
         for (int i = 0; i < finalPath.size(); i++) {
+            if(i == 14 || i == 19 || i == 26) {
+                System.out.println("hello");
+            }
             long start = System.currentTimeMillis();
             Stack<SubwayData> finalroute = finalPath.get(i);    //경로 n번
             Stack<Integer> transtation = transNum.get(i);   //통과역 n번
@@ -555,6 +654,9 @@ public class ScheduleManager {
             while (!finalroute.isEmpty()) {
                 SubwayData station = finalroute.pop();
                 if ((station.transfer && station.transferInfo.timeSec == 0) || prev == root) {  //출발역 or 환승역
+                    if(station.stationName.equals("디지털미디어시티")) {
+                        System.out.println("hello");
+                    }
                     station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station), transtation.pop());
                     info1.transferNum++;
                 } else {  //그 외 역
@@ -568,7 +670,7 @@ public class ScheduleManager {
                         }
                     }
                 }
-                info1.path.offer(station);
+                info1.path.add(station);
                 updatePathInfo(prev, station);  //경로 정보 업데이트
                 if(prev == root) {
                     station.schedule.duration = 0;
@@ -587,6 +689,10 @@ public class ScheduleManager {
             }
             info1.transferNum -= 1;
             info1.stepNum -=1;
+            if(info1.duration <= 0) {
+                info1.duration = 99999;
+                info1.transferNum = 99999;
+            }
             pathInfos.add(info1);
             long finish = System.currentTimeMillis() - start;
             System.out.println(finish);
