@@ -155,17 +155,24 @@ class pathInfo {
 public class MetroNavi {
     /*public static void ininialize()
      * 입력 받기*/
-    public static void initialize() {
+    public static void initialize(String[] args) {
         MakeTree mk = new MakeTree();
         ScheduleManager sm = new ScheduleManager();
         System.out.print("출발역, 도착역, 시, 분, 요일 : ");
         Scanner input = new Scanner(System.in);
 
+/*        ScheduleManager.departureStaionName = args[0];
+        ScheduleManager.destinationStationName = args[1];
+        ScheduleManager.startHour = Integer.parseInt(args[2]);
+        ScheduleManager.startMinute = Integer.parseInt(args[3]);
+        ScheduleManager.weekType = args[4];*/
+
         ScheduleManager.departureStaionName = input.next();
         ScheduleManager.destinationStationName = input.next();
-        ScheduleManager.startHour = Integer.parseInt(input.next());
-        ScheduleManager.startMinute = Integer.parseInt(input.next());
+        ScheduleManager.startHour = input.nextInt();
+        ScheduleManager.startMinute = input.nextInt();
         ScheduleManager.weekType = input.next();
+
         mk.initRoot();  //root노드 초기화
         sm.searchDstLineNum();  //도착역 호선 탐색
     }
@@ -174,7 +181,7 @@ public class MetroNavi {
     public static void main(String[] args) {
         MakeTree mk = new MakeTree();
         databaseManager.connectDatabase();  //DB 연결
-        initialize();
+        initialize(args);
         ArrayList<pathInfo> pathInfos = MakeTree.makeTree();
         Collections.sort(pathInfos, new Comparator<pathInfo>() {
             @Override
@@ -189,7 +196,6 @@ public class MetroNavi {
         });
         pathInfo shortestPath = pathInfos.get(0);
 
-        MakeJson.ShortestPath(shortestPath);
         Collections.sort(pathInfos, new Comparator<pathInfo>() {
             @Override
             public int compare(pathInfo o1, pathInfo o2) {
@@ -202,7 +208,7 @@ public class MetroNavi {
             }
         });
         pathInfo lowTransferPath = pathInfos.get(0);
-        MakeJson.LowTransferPath(lowTransferPath);
+        MakeJson.Path(shortestPath, lowTransferPath);
     }
 }
 
