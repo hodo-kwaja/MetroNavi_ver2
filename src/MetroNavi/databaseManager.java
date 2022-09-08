@@ -13,7 +13,7 @@ class databaseManager {
 
     /*conn 생성*/
     public static void connectDatabase() {
-        String jdbcDriver = "com.mysql.jdbc.Driver";
+        String jdbcDriver = "com.mysql.cj.jdbc.Driver";
         String dbURL = "jdbc:mysql://localhost:3306/?user=root";
         String userName = "root";
         String password = "19980316";
@@ -30,7 +30,7 @@ class databaseManager {
     public static ArrayList<Integer> searchLineNumDB(String stationName) {
         ArrayList<Integer> dstLineNum = new ArrayList<>();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery1 = String.format("SELECT line_id FROM Subway.sub_line_name_info WHERE station_name = \"%s\" AND city_id = 1000", stationName);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
@@ -48,7 +48,7 @@ class databaseManager {
     public static ArrayList<SubwayData> getSubLineNameInfoDB(String stationName) {
         ArrayList<SubwayData> stations = new ArrayList<>();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery1 = String.format("SELECT * FROM Subway.sub_line_name_info WHERE station_name = \"%s\" AND city_id = 1000", stationName);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
@@ -76,7 +76,7 @@ class databaseManager {
     public static ArrayList<TimeTable> getScheduleDB(SubwayData parent, SubwayData child) {
         ArrayList<TimeTable> schedules = new ArrayList<>();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery;
             strQuery = String.format("SELECT * FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND hour - %d <= 1 AND ((hour * 60 + minute) " +
@@ -106,7 +106,7 @@ class databaseManager {
     public static TimeTable getOneScheduleDB(SubwayData parent, SubwayData child) {
         TimeTable schedule = new TimeTable();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery;
             strQuery = String.format("SELECT station_detail_id, line_direction, subway_type, week_type, schedule_name, hour, minute, line_id " +
@@ -138,7 +138,7 @@ class databaseManager {
     public static SubwayData getStationWithDetailIdDB(int stationDetailId) {
         SubwayData station = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery1 = String.format("SELECT * FROM Subway.sub_line_name_info WHERE station_detail_id = %d AND city_id = 1000", stationDetailId);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
@@ -166,7 +166,7 @@ class databaseManager {
     public static double getCongestDB(String time, SubwayData station) {
         double result = 0.0;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery1 = String.format("SELECT %s FROM Subway.sub_congest_data WHERE station_name = \"%s\" AND line_id = %d AND line_direction = %d AND week_type = \"%s\"", time, station.stationName, station.lineId, station.lineDirection, ScheduleManager.weekType);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
@@ -183,7 +183,7 @@ class databaseManager {
 
     public static void getTransferInfoDB(SubwayData start, SubwayData finish) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery1 = String.format("SELECT time_sec, distance FROM Subway.sub_transfer WHERE start_station_detail_id = %d AND finish_station_detail_id = %d ", start.stationDetailId, finish.stationDetailId);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
@@ -203,7 +203,7 @@ class databaseManager {
     public static void getEndScheduleDB(SubwayData station) {
         TimeTable TT = new TimeTable();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
             String strQuery1 = String.format("SELECT * FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND line_direction = %d AND week_type = \"%s\" AND subway_type = \"%s\" AND hour >= 5 LIMIT 1",
                     station.schedule.lineId, station.schedule.stationDetailId, station.schedule.lineDirection, station.schedule.weekType, station.schedule.typeName);
