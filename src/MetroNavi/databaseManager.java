@@ -164,11 +164,12 @@ class databaseManager {
     }
 
     public static double getCongestDB(String time, SubwayData station) {
+        ScheduleManager sm = ScheduleManager.getInstance();
         double result = 0.0;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Statement stmt = conn.createStatement();
-            String strQuery1 = String.format("SELECT %s FROM Subway.sub_congest_data WHERE station_name = \"%s\" AND line_id = %d AND line_direction = %d AND week_type = \"%s\"", time, station.stationName, station.lineId, station.lineDirection, ScheduleManager.weekType);
+            String strQuery1 = String.format("SELECT %s FROM Subway.sub_congest_data WHERE station_name = \"%s\" AND line_id = %d AND line_direction = %d AND week_type = \"%s\"", time, station.stationName, station.lineId, station.lineDirection, sm.weekType);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery1);
             while(resultSet.next()) {
                 result = resultSet.getDouble(time);
