@@ -61,12 +61,13 @@ class SubwayData {
     SubwayData() {};
 
     SubwayData(SubwayData SD1, SubwayData SD2, int DI) {
+        ScheduleManager sm = ScheduleManager.getInstance();
         this.stationName = SD1.stationName;
         this.stationDetailId = SD1.stationDetailId;
         this.schedule.stationDetailId = SD1.stationDetailId;
         this.lineId = SD1.lineId;
         this.schedule.lineId = SD1.lineId;
-        this.schedule.weekType = ScheduleManager.weekType;
+        this.schedule.weekType = sm.weekType;
         this.schedule.typeName = SD2.schedule.typeName;
         this.schedule.lineDirection = DI;
         this.lineDirection = DI;
@@ -156,22 +157,22 @@ public class MetroNavi {
     /*public static void ininialize()
      * 입력 받기*/
     public static void initialize(String[] args) {
-        MakeTree mk = new MakeTree();
-        ScheduleManager sm = new ScheduleManager();
-        //System.out.print("출발역, 도착역, 시, 분, 요일 : ");
-        Scanner input = new Scanner(System.in);
+        MakeTree mk = MakeTree.getInstance();
+        ScheduleManager sm = ScheduleManager.getInstance();
+/*        System.out.print("출발역, 도착역, 시, 분, 요일 : ");
+        Scanner input = new Scanner(System.in);*/
 
-        ScheduleManager.departureStaionName = args[0];
-        ScheduleManager.destinationStationName = args[1];
-        ScheduleManager.startHour = Integer.parseInt(args[2]);
-        ScheduleManager.startMinute = Integer.parseInt(args[3]);
-        ScheduleManager.weekType = args[4];
+        sm.departureStaionName = args[0];
+        sm.destinationStationName = args[1];
+        sm.startHour = Integer.parseInt(args[2]);
+        sm.startMinute = Integer.parseInt(args[3]);
+        sm.weekType = args[4];
 
-/*        ScheduleManager.departureStaionName = input.next();
-        ScheduleManager.destinationStationName = input.next();
-        ScheduleManager.startHour = input.nextInt();
-        ScheduleManager.startMinute = input.nextInt();
-        ScheduleManager.weekType = input.next();*/
+/*        sm.departureStaionName = input.next();
+        sm.destinationStationName = input.next();
+        sm.startHour = input.nextInt();
+        sm.startMinute = input.nextInt();
+        sm.weekType = input.next();*/
 
         mk.initRoot();  //root노드 초기화
         sm.searchDstLineNum();  //도착역 호선 탐색
@@ -179,10 +180,12 @@ public class MetroNavi {
     /*psvm
      * 메인 메서드*/
     public static void main(String[] args) {
-        MakeTree mk = new MakeTree();
+        MakeTree mk = MakeTree.getInstance();
+        ScheduleManager sm = ScheduleManager.getInstance();
+        sm.departureStaionName = "똥방구";
         databaseManager.connectDatabase();  //DB 연결
         initialize(args);
-        ArrayList<pathInfo> pathInfos = MakeTree.makeTree();
+        ArrayList<pathInfo> pathInfos = mk.makeTree();
         Collections.sort(pathInfos, new Comparator<pathInfo>() {
             @Override
             public int compare(pathInfo o1, pathInfo o2) {
@@ -209,6 +212,8 @@ public class MetroNavi {
         });
         pathInfo lowTransferPath = pathInfos.get(0);
         MakeJson.Path(shortestPath, lowTransferPath);
+        ScheduleManager.reset();
+        MakeTree.reset();
     }
 }
 

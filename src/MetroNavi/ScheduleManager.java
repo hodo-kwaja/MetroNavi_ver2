@@ -4,18 +4,35 @@ import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.sql.Time;
 import java.util.*;
 
-public class ScheduleManager {
+class ScheduleManager {
 
-    static boolean[] visit = new boolean[1045]; //지나온 역
-    static String departureStaionName; //출발역 이름
-    static String destinationStationName;  //도착역 이름
-    static ArrayList<Integer> dstLineNum;
-    static int startHour, startMinute; //출발 시각(시, 분)
-    static String weekType;    //요일
-    static ArrayList<Node> path = new ArrayList<>();   //도착역에 도착한 노드들
-    static Queue<Node> queue = new LinkedList<>(); //도착역과 호선이 다른 경로
-    static Queue<Node> priorQ = new LinkedList<>();    //도착역과 호선이 같은 경로
-    static ArrayList<Stack<SubwayData>> finalPath = new ArrayList<>();  //최종 도출 경로
+    private static ScheduleManager innstance = null;
+
+    public static void reset() {
+        innstance = null;
+    }
+    ScheduleManager() {}
+    public static ScheduleManager getInstance()
+    {
+        if (innstance == null)
+        {
+            synchronized(ScheduleManager.class)
+            {
+                innstance = new ScheduleManager();
+            }
+        }
+        return innstance;
+    }
+    public boolean[] visit = new boolean[1045]; //지나온 역
+    public String departureStaionName; //출발역 이름
+    public String destinationStationName;  //도착역 이름
+    public ArrayList<Integer> dstLineNum = new ArrayList<>();
+    public int startHour, startMinute; //출발 시각(시, 분)
+    public String weekType;    //요일
+    public ArrayList<Node> path = new ArrayList<>();   //도착역에 도착한 노드들
+    public Queue<Node> queue = new LinkedList<>(); //도착역과 호선이 다른 경로
+    public Queue<Node> priorQ = new LinkedList<>();    //도착역과 호선이 같은 경로
+    public ArrayList<Stack<SubwayData>> finalPath = new ArrayList<>();  //최종 도출 경로
 
 
     /*public static SubwayData giveMe(TimeTable TT)
@@ -542,6 +559,7 @@ public class ScheduleManager {
     /*public static void onePath(Node station)
      * 도착역까지 한방에 경로 찾기*/
     public static void onePath(Node station) {
+        ScheduleManager sm = ScheduleManager.getInstance();
         if (station.lineDirection == 0) {    //하행
             Stack<SubwayData> stepPath = new Stack<>();
             SubwayData temp;
@@ -549,14 +567,14 @@ public class ScheduleManager {
             temp = databaseManager.getStationWithDetailIdDB(previous.nextStation);
             while (temp != null) {
                 temp.lineDirection = 0;
-                if (temp.stationName.contains(destinationStationName)) { //목적지
+                if (temp.stationName.contains(sm.destinationStationName)) { //목적지
                     temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
                     destination.parentNode = station;
                     station.step = stepPath;
-                    path.add(destination);
-                    Arrays.fill(visit, false);
+                    sm.path.add(destination);
+                    Arrays.fill(sm.visit, false);
                     break;
                 } else {  //목적지 아님
                     if (ScheduleManager.checkTransfer(temp.stationName)) {   //환승역
@@ -579,14 +597,14 @@ public class ScheduleManager {
             temp = databaseManager.getStationWithDetailIdDB(previous.beforeStation);
             while (temp != null) {
                 temp.lineDirection = 1;
-                if (temp.stationName.contains(destinationStationName)) { //목적지
+                if (temp.stationName.contains(sm.destinationStationName)) { //목적지
                     temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
                     destination.parentNode = station;
                     station.step = stepPath;
-                    path.add(destination);
-                    Arrays.fill(visit, false);
+                    sm.path.add(destination);
+                    Arrays.fill(sm.visit, false);
                     break;
                 } else {  //목적지 아님
                     if (ScheduleManager.checkTransfer(temp.stationName)) {   //환승역
@@ -608,8 +626,9 @@ public class ScheduleManager {
     /*public static void routeOrganization()
      * 경로 정리해서 stack에 담음*/
     public static ArrayList<pathInfo> routeOrganization() {
+        ScheduleManager sm = ScheduleManager.getInstance();
         ArrayList<Stack<Integer>> transNum = new ArrayList<>();
-        for (Node dst : path) {
+        for (Node dst : sm.path) {
             Stack<SubwayData> path1 = new Stack<>();
             Stack<Integer> transnum = new Stack<>();
             Node station = dst;
@@ -631,7 +650,7 @@ public class ScheduleManager {
                 station = station.parentNode;
             }
             transNum.add(transnum);
-            finalPath.add(path1);
+            sm.finalPath.add(path1);
         }
         return ScheduleManager.addTimeLine(transNum);   //시간표 추가
     }
@@ -639,14 +658,16 @@ public class ScheduleManager {
     /*public void addTimeline()
      * 경로에 시간표 추가*/
     public static ArrayList<pathInfo> addTimeLine(ArrayList<Stack<Integer>> transNum) {
+        ScheduleManager sm = ScheduleManager.getInstance();
+        MakeTree mk = MakeTree.getInstance();
         ArrayList<pathInfo> pathInfos = new ArrayList<>();
-        SubwayData root = MakeTree.root.data;
-        for (int i = 0; i < finalPath.size(); i++) {
+        SubwayData root = mk.root.data;
+        for (int i = 0; i < sm.finalPath.size(); i++) {
             if(i == 14 || i == 19 || i == 26) {
                 System.out.println("hello");
             }
             long start = System.currentTimeMillis();
-            Stack<SubwayData> finalroute = finalPath.get(i);    //경로 n번
+            Stack<SubwayData> finalroute = sm.finalPath.get(i);    //경로 n번
             Stack<Integer> transtation = transNum.get(i);   //통과역 n번
             pathInfo info1 = new pathInfo();
             SubwayData prev = root; //이번 역

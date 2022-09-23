@@ -1,0 +1,352 @@
+{
+  "ShortestPath": [
+    {
+      "stationName": "천안",
+      "stationCode": "P169",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 13,
+        "minute": 56,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 0,
+        "numStep": 0
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "봉명",
+      "stationCode": "P170",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 13,
+        "minute": 59,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 1
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "쌍용",
+      "stationCode": "P171",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 1,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 2,
+        "numStep": 2
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "아산",
+      "stationCode": "P172",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 4,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 3
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "탕정",
+      "stationCode": "P173",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 7,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 4
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "배방",
+      "stationCode": "P174",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 10,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 5
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "온양온천",
+      "stationCode": "P176",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 14,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 4,
+        "numStep": 6
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "신창",
+      "stationCode": "P177",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "hour": 14,
+        "minute": 19,
+        "congestScore": 0,
+        "duration": 5,
+        "numStep": 7
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    }
+  ],
+  "LowTransferPath": [
+    {
+      "stationName": "천안",
+      "stationCode": "P169",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 13,
+        "minute": 56,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 0,
+        "numStep": 0
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "봉명",
+      "stationCode": "P170",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 13,
+        "minute": 59,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 1
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "쌍용",
+      "stationCode": "P171",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 1,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 2,
+        "numStep": 2
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "아산",
+      "stationCode": "P172",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 4,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 3
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "탕정",
+      "stationCode": "P173",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 7,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 4
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "배방",
+      "stationCode": "P174",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 10,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 3,
+        "numStep": 5
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "온양온천",
+      "stationCode": "P176",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "weekType": "W",
+        "hour": 14,
+        "minute": 14,
+        "typeName": "N",
+        "scheduleName": "신창",
+        "congestScore": 0,
+        "duration": 4,
+        "numStep": 6
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "신창",
+      "stationCode": "P177",
+      "lineId": 1,
+      "schedule": {
+        "lineDirection": 0,
+        "hour": 14,
+        "minute": 19,
+        "congestScore": 0,
+        "duration": 5,
+        "numStep": 7
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    }
+  ]
+}
