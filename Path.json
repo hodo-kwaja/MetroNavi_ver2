@@ -1,17 +1,17 @@
 {
   "ShortestPath": [
     {
-      "stationName": "천안",
-      "stationCode": "P169",
-      "lineId": 1,
+      "stationName": "신림",
+      "stationCode": "230",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 13,
-        "minute": 56,
+        "hour": 12,
+        "minute": 15,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
+        "scheduleName": "성수",
+        "congestScore": 1,
         "duration": 0,
         "numStep": 0
       },
@@ -23,18 +23,18 @@
       }
     },
     {
-      "stationName": "봉명",
-      "stationCode": "P170",
-      "lineId": 1,
+      "stationName": "봉천",
+      "stationCode": "229",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 13,
-        "minute": 59,
+        "hour": 12,
+        "minute": 17,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "성수",
+        "congestScore": 1,
+        "duration": 2,
         "numStep": 1
       },
       "transfer": {
@@ -45,18 +45,18 @@
       }
     },
     {
-      "stationName": "쌍용",
-      "stationCode": "P171",
-      "lineId": 1,
+      "stationName": "서울대입구",
+      "stationCode": "228",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 1,
+        "hour": 12,
+        "minute": 18,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 2,
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 3,
         "numStep": 2
       },
       "transfer": {
@@ -67,18 +67,18 @@
       }
     },
     {
-      "stationName": "아산",
-      "stationCode": "P172",
-      "lineId": 1,
+      "stationName": "낙성대",
+      "stationCode": "227",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 4,
+        "hour": 12,
+        "minute": 20,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 5,
         "numStep": 3
       },
       "transfer": {
@@ -89,85 +89,330 @@
       }
     },
     {
-      "stationName": "탕정",
-      "stationCode": "P173",
-      "lineId": 1,
+      "stationName": "사당",
+      "stationCode": "226",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 7,
+        "hour": 12,
+        "minute": 23,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 8,
         "numStep": 4
       },
       "transfer": {
-        "transferNum": 0,
-        "isTransfer": false,
+        "transferNum": 1,
+        "isTransfer": true,
+        "transferDistance": 120,
+        "transferTime": 111
+      }
+    },
+    {
+      "stationName": "사당",
+      "stationCode": "433",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 25,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 10,
+        "numStep": 4
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": true,
         "transferDistance": 0,
         "transferTime": 0
       }
     },
     {
-      "stationName": "배방",
-      "stationCode": "P174",
-      "lineId": 1,
+      "stationName": "총신대입구",
+      "stationCode": "432",
+      "lineId": 4,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 10,
+        "hour": 12,
+        "minute": 27,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 12,
         "numStep": 5
       },
       "transfer": {
-        "transferNum": 0,
+        "transferNum": 1,
         "isTransfer": false,
         "transferDistance": 0,
         "transferTime": 0
       }
     },
     {
-      "stationName": "온양온천",
-      "stationCode": "P176",
-      "lineId": 1,
+      "stationName": "동작",
+      "stationCode": "431",
+      "lineId": 4,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 14,
+        "hour": 12,
+        "minute": 30,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 4,
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 15,
         "numStep": 6
       },
       "transfer": {
-        "transferNum": 0,
+        "transferNum": 1,
         "isTransfer": false,
         "transferDistance": 0,
         "transferTime": 0
       }
     },
     {
-      "stationName": "신창",
-      "stationCode": "P177",
-      "lineId": 1,
+      "stationName": "이촌",
+      "stationCode": "430",
+      "lineId": 4,
       "schedule": {
-        "lineDirection": 0,
-        "hour": 14,
-        "minute": 19,
-        "congestScore": 0,
-        "duration": 5,
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 34,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 19,
         "numStep": 7
       },
       "transfer": {
-        "transferNum": 0,
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "신용산",
+      "stationCode": "429",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 36,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 21,
+        "numStep": 8
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "삼각지",
+      "stationCode": "428",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 38,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 23,
+        "numStep": 9
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "숙대입구",
+      "stationCode": "427",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 40,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 25,
+        "numStep": 10
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "서울역",
+      "stationCode": "426",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 42,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 27,
+        "numStep": 11
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "회현",
+      "stationCode": "425",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 44,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 29,
+        "numStep": 12
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "명동",
+      "stationCode": "424",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 45,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 30,
+        "numStep": 13
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "충무로",
+      "stationCode": "423",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 47,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 32,
+        "numStep": 14
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "동대문역사문화공원",
+      "stationCode": "422",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 49,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 34,
+        "numStep": 15
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "동대문",
+      "stationCode": "421",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 51,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 36,
+        "numStep": 16
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "혜화",
+      "stationCode": "420",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 53,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 38,
+        "numStep": 17
+      },
+      "transfer": {
+        "transferNum": 1,
         "isTransfer": false,
         "transferDistance": 0,
         "transferTime": 0
@@ -176,17 +421,17 @@
   ],
   "LowTransferPath": [
     {
-      "stationName": "천안",
-      "stationCode": "P169",
-      "lineId": 1,
+      "stationName": "신림",
+      "stationCode": "230",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 13,
-        "minute": 56,
+        "hour": 12,
+        "minute": 15,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
+        "scheduleName": "성수",
+        "congestScore": 1,
         "duration": 0,
         "numStep": 0
       },
@@ -198,18 +443,18 @@
       }
     },
     {
-      "stationName": "봉명",
-      "stationCode": "P170",
-      "lineId": 1,
+      "stationName": "봉천",
+      "stationCode": "229",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 13,
-        "minute": 59,
+        "hour": 12,
+        "minute": 17,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "성수",
+        "congestScore": 1,
+        "duration": 2,
         "numStep": 1
       },
       "transfer": {
@@ -220,18 +465,18 @@
       }
     },
     {
-      "stationName": "쌍용",
-      "stationCode": "P171",
-      "lineId": 1,
+      "stationName": "서울대입구",
+      "stationCode": "228",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 1,
+        "hour": 12,
+        "minute": 18,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 2,
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 3,
         "numStep": 2
       },
       "transfer": {
@@ -242,18 +487,18 @@
       }
     },
     {
-      "stationName": "아산",
-      "stationCode": "P172",
-      "lineId": 1,
+      "stationName": "낙성대",
+      "stationCode": "227",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 4,
+        "hour": 12,
+        "minute": 20,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 5,
         "numStep": 3
       },
       "transfer": {
@@ -264,65 +509,353 @@
       }
     },
     {
-      "stationName": "탕정",
-      "stationCode": "P173",
-      "lineId": 1,
+      "stationName": "사당",
+      "stationCode": "226",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 7,
+        "hour": 12,
+        "minute": 23,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 8,
         "numStep": 4
       },
       "transfer": {
-        "transferNum": 0,
-        "isTransfer": false,
+        "transferNum": 1,
+        "isTransfer": true,
+        "transferDistance": 120,
+        "transferTime": 111
+      }
+    },
+    {
+      "stationName": "사당",
+      "stationCode": "433",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 25,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 10,
+        "numStep": 4
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": true,
         "transferDistance": 0,
         "transferTime": 0
       }
     },
     {
-      "stationName": "배방",
-      "stationCode": "P174",
-      "lineId": 1,
+      "stationName": "총신대입구",
+      "stationCode": "432",
+      "lineId": 4,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 10,
+        "hour": 12,
+        "minute": 27,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 3,
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 12,
         "numStep": 5
       },
       "transfer": {
-        "transferNum": 0,
+        "transferNum": 1,
         "isTransfer": false,
         "transferDistance": 0,
         "transferTime": 0
       }
     },
     {
-      "stationName": "온양온천",
-      "stationCode": "P176",
-      "lineId": 1,
+      "stationName": "동작",
+      "stationCode": "431",
+      "lineId": 4,
       "schedule": {
-        "lineDirection": 0,
+        "lineDirection": 1,
         "weekType": "W",
-        "hour": 14,
-        "minute": 14,
+        "hour": 12,
+        "minute": 30,
         "typeName": "N",
-        "scheduleName": "신창",
-        "congestScore": 0,
-        "duration": 4,
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 15,
         "numStep": 6
       },
       "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "이촌",
+      "stationCode": "430",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 34,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 19,
+        "numStep": 7
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "신용산",
+      "stationCode": "429",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 36,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 21,
+        "numStep": 8
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "삼각지",
+      "stationCode": "428",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 38,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 23,
+        "numStep": 9
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "숙대입구",
+      "stationCode": "427",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 40,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 25,
+        "numStep": 10
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "서울역",
+      "stationCode": "426",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 42,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 27,
+        "numStep": 11
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "회현",
+      "stationCode": "425",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 44,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 29,
+        "numStep": 12
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "명동",
+      "stationCode": "424",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 45,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 30,
+        "numStep": 13
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "충무로",
+      "stationCode": "423",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 47,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 32,
+        "numStep": 14
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "동대문역사문화공원",
+      "stationCode": "422",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 49,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 34,
+        "numStep": 15
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "동대문",
+      "stationCode": "421",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 51,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 36,
+        "numStep": 16
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "혜화",
+      "stationCode": "420",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 53,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 38,
+        "numStep": 17
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    }
+  ],
+  "LowCongestPath": [
+    {
+      "stationName": "신림",
+      "stationCode": "230",
+      "lineId": 2,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 15,
+        "typeName": "N",
+        "scheduleName": "성수",
+        "congestScore": 1,
+        "duration": 0,
+        "numStep": 0
+      },
+      "transfer": {
         "transferNum": 0,
         "isTransfer": false,
         "transferDistance": 0,
@@ -330,19 +863,396 @@
       }
     },
     {
-      "stationName": "신창",
-      "stationCode": "P177",
-      "lineId": 1,
+      "stationName": "봉천",
+      "stationCode": "229",
+      "lineId": 2,
       "schedule": {
-        "lineDirection": 0,
-        "hour": 14,
-        "minute": 19,
-        "congestScore": 0,
-        "duration": 5,
-        "numStep": 7
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 17,
+        "typeName": "N",
+        "scheduleName": "성수",
+        "congestScore": 1,
+        "duration": 2,
+        "numStep": 1
       },
       "transfer": {
         "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "서울대입구",
+      "stationCode": "228",
+      "lineId": 2,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 18,
+        "typeName": "N",
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 3,
+        "numStep": 2
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "낙성대",
+      "stationCode": "227",
+      "lineId": 2,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 20,
+        "typeName": "N",
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 5,
+        "numStep": 3
+      },
+      "transfer": {
+        "transferNum": 0,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "사당",
+      "stationCode": "226",
+      "lineId": 2,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 23,
+        "typeName": "N",
+        "scheduleName": "성수",
+        "congestScore": 2,
+        "duration": 8,
+        "numStep": 4
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": true,
+        "transferDistance": 120,
+        "transferTime": 111
+      }
+    },
+    {
+      "stationName": "사당",
+      "stationCode": "433",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 25,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 10,
+        "numStep": 4
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": true,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "총신대입구",
+      "stationCode": "432",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 27,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 12,
+        "numStep": 5
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "동작",
+      "stationCode": "431",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 30,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 15,
+        "numStep": 6
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "이촌",
+      "stationCode": "430",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 34,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 19,
+        "numStep": 7
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "신용산",
+      "stationCode": "429",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 36,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 21,
+        "numStep": 8
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "삼각지",
+      "stationCode": "428",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 38,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 23,
+        "numStep": 9
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "숙대입구",
+      "stationCode": "427",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 40,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 25,
+        "numStep": 10
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "서울역",
+      "stationCode": "426",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 42,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 27,
+        "numStep": 11
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "회현",
+      "stationCode": "425",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 44,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 29,
+        "numStep": 12
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "명동",
+      "stationCode": "424",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 45,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 30,
+        "numStep": 13
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "충무로",
+      "stationCode": "423",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 47,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 32,
+        "numStep": 14
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "동대문역사문화공원",
+      "stationCode": "422",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 49,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 34,
+        "numStep": 15
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "동대문",
+      "stationCode": "421",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 51,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 36,
+        "numStep": 16
+      },
+      "transfer": {
+        "transferNum": 1,
+        "isTransfer": false,
+        "transferDistance": 0,
+        "transferTime": 0
+      }
+    },
+    {
+      "stationName": "혜화",
+      "stationCode": "420",
+      "lineId": 4,
+      "schedule": {
+        "lineDirection": 1,
+        "weekType": "W",
+        "hour": 12,
+        "minute": 53,
+        "typeName": "N",
+        "scheduleName": "당고개",
+        "congestScore": 1,
+        "duration": 38,
+        "numStep": 17
+      },
+      "transfer": {
+        "transferNum": 1,
         "isTransfer": false,
         "transferDistance": 0,
         "transferTime": 0
