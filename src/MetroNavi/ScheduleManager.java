@@ -567,7 +567,7 @@ class ScheduleManager {
             temp = databaseManager.getStationWithDetailIdDB(previous.nextStation);
             while (temp != null) {
                 temp.lineDirection = 0;
-                if (temp.stationName.contains(sm.destinationStationName)) { //목적지
+                if (temp.stationName.equals(sm.destinationStationName)) { //목적지
                     temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
@@ -597,7 +597,7 @@ class ScheduleManager {
             temp = databaseManager.getStationWithDetailIdDB(previous.beforeStation);
             while (temp != null) {
                 temp.lineDirection = 1;
-                if (temp.stationName.contains(sm.destinationStationName)) { //목적지
+                if (temp.stationName.equals(sm.destinationStationName)) { //목적지
                     temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
@@ -663,9 +663,6 @@ class ScheduleManager {
         ArrayList<pathInfo> pathInfos = new ArrayList<>();
         SubwayData root = mk.root.data;
         for (int i = 0; i < sm.finalPath.size(); i++) {
-            if(i == 14 || i == 19 || i == 26) {
-                System.out.println("hello");
-            }
             long start = System.currentTimeMillis();
             Stack<SubwayData> finalroute = sm.finalPath.get(i);    //경로 n번
             Stack<Integer> transtation = transNum.get(i);   //통과역 n번
@@ -675,9 +672,6 @@ class ScheduleManager {
             while (!finalroute.isEmpty()) {
                 SubwayData station = finalroute.pop();
                 if ((station.transfer && station.transferInfo.timeSec == 0) || prev == root) {  //출발역 or 환승역
-                    if(station.stationName.equals("디지털미디어시티")) {
-                        System.out.println("hello");
-                    }
                     station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station), transtation.pop());
                     info1.transferNum++;
                 } else {  //그 외 역
@@ -703,11 +697,15 @@ class ScheduleManager {
                 }
                 info1.stepNum++;
                 info1.duration += station.schedule.duration;
+                station.schedule.duration = prev.schedule.duration + station.schedule.duration;
                 prev = station;
             }
-            if(count != 0) {
+            if((double)count/info1.stepNum >= 0.8) {
                 info1.congest = info1.congest / (double) count;
             }
+            else
+                info1.congest = 99999;
+
             info1.transferNum -= 1;
             info1.stepNum -=1;
             if(info1.duration <= 0) {
