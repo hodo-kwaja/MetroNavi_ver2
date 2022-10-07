@@ -672,7 +672,8 @@ class ScheduleManager {
             while (!finalroute.isEmpty()) {
                 SubwayData station = finalroute.pop();
                 if ((station.transfer && station.transferInfo.timeSec == 0) || prev == root) {  //출발역 or 환승역
-                    station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station), transtation.pop());
+                    int minute = prev.schedule.minute + prev.transferInfo.timeSec/60;
+                    station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station, minute), transtation.pop());
                     info1.transferNum++;
                 } else {  //그 외 역
                     station.schedule = databaseManager.getOneScheduleDB(prev, station);

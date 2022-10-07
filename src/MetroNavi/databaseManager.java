@@ -73,7 +73,7 @@ class databaseManager {
         return stations;
     }
 
-    public static ArrayList<TimeTable> getScheduleDB(SubwayData parent, SubwayData child) {
+    public static ArrayList<TimeTable> getScheduleDB(SubwayData parent, SubwayData child, int minute) {
         ArrayList<TimeTable> schedules = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -81,7 +81,7 @@ class databaseManager {
             String strQuery;
             strQuery = String.format("SELECT * FROM Subway.sub_tt_line_%d WHERE station_detail_id = %d AND hour - %d <= 1 AND ((hour * 60 + minute) " +
                             "- (%d * 60 + %d)) >= 0 AND week_type = \'%s\' AND line_direction = %d LIMIT 5",
-                    child.lineId, child.stationDetailId, parent.schedule.hour, parent.schedule.hour, parent.schedule.minute,
+                    child.lineId, child.stationDetailId, parent.schedule.hour, parent.schedule.hour, minute,
                     parent.schedule.weekType, child.lineDirection);
             java.sql.ResultSet resultSet = stmt.executeQuery(strQuery);
             while(resultSet.next()) {
