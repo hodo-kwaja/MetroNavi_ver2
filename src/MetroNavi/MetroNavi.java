@@ -158,20 +158,20 @@ public class MetroNavi {
     public static void initialize(String[] args) {
         MakeTree mk = MakeTree.getInstance();
         ScheduleManager sm = ScheduleManager.getInstance();
-        System.out.print("출발역, 도착역, 시, 분, 요일 : ");
-        Scanner input = new Scanner(System.in);
+/*        System.out.print("출발역, 도착역, 시, 분, 요일 : ");
+        Scanner input = new Scanner(System.in);*/
 
-/*        sm.departureStaionName = args[0];
+        sm.departureStaionName = args[0];
         sm.destinationStationName = args[1];
         sm.startHour = Integer.parseInt(args[2]);
         sm.startMinute = Integer.parseInt(args[3]);
-        sm.weekType = args[4];*/
+        sm.weekType = args[4];
 
-        sm.departureStaionName = input.next();
+/*        sm.departureStaionName = input.next();
         sm.destinationStationName = input.next();
         sm.startHour = input.nextInt();
         sm.startMinute = input.nextInt();
-        sm.weekType = input.next();
+        sm.weekType = input.next();*/
 
         mk.initRoot();  //root노드 초기화
         sm.searchDstLineNum();  //도착역 호선 탐색

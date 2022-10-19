@@ -3,8 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/MetroNavi_2_jar</output-path>
     <root id="archive" name="MetroNavi_2.jar">
       <element id="module-output" name="MetroNavi_2" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/gson-2.9.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/mysql-connector-java-8.0.27.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/gson-2.9.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

@@ -672,7 +672,7 @@ class ScheduleManager {
             while (!finalroute.isEmpty()) {
                 SubwayData station = finalroute.pop();
                 if ((station.transfer && station.transferInfo.timeSec == 0) || prev == root) {  //출발역 or 환승역
-                    int minute = prev.schedule.minute + prev.transferInfo.timeSec/60;
+                    int minute = prev.schedule.minute + prev.transferInfo.timeSec/60 + 1;
                     station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station, minute), transtation.pop());
                     info1.transferNum++;
                 } else {  //그 외 역
@@ -735,6 +735,11 @@ class ScheduleManager {
             databaseManager.getEndScheduleDB(start);
             finish.schedule =  databaseManager.getOneScheduleDB(start, finish);
             TimeAndDate.calcEndTime(parent, child, start.schedule, finish.schedule);
+            child.schedule.typeName = parent.schedule.typeName;
+            child.schedule.stationDetailId = child.stationDetailId;
+            child.schedule.weekType = parent.schedule.weekType;
+            child.schedule.scheduleName = parent.schedule.scheduleName;
+            child.schedule.lineId = child.lineId;
         }
         else {
             SubwayData start = new SubwayData(child, parent, 1);
@@ -742,6 +747,11 @@ class ScheduleManager {
             databaseManager.getEndScheduleDB(start);
             finish.schedule = databaseManager.getOneScheduleDB(start, finish);
             TimeAndDate.calcEndTime(parent, child, start.schedule, finish.schedule);
+            child.schedule.typeName = parent.schedule.typeName;
+            child.schedule.stationDetailId = child.stationDetailId;
+            child.schedule.weekType = parent.schedule.weekType;
+            child.schedule.scheduleName = parent.schedule.scheduleName;
+            child.schedule.lineId = child.lineId;
         }
     }
 }
