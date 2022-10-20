@@ -58,7 +58,7 @@ class ScheduleManager {
             TimeTable TT = schedules.get(i);
 
             if (TT.lineDirection == 0) {    //하행
-                if (TT.lineId == 108) { //경의중
+                if (TT.lineId == 108) { //경춘선
                     SubwayData sub = giveMe(TT);
                     int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -134,13 +134,13 @@ class ScheduleManager {
                             }
 
                             int result = sub.stationCode.compareTo(transtation.stationCode);
-                            if(transtation.stationCode.contains("K3")) {
+                            if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K3")) {
                                 if(result <= 0) {
                                     newSchedule = TT;
                                     break;
                                 }
                             }
-                            if(transtation.stationCode.contains("K1")) {
+                            if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K1")) {
                                 if(result >= 0) {
                                     newSchedule = TT;
                                     break;
@@ -151,14 +151,32 @@ class ScheduleManager {
                     else {
                         SubwayData sub = giveMe(TT);
                         int result = sub.stationCode.compareTo(transtation.stationCode);
-                        if(sub.stationCode.contains("K3")) {
+                        if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K1")) {
+                            if(result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                        else if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K3")) {
                             if(result <= 0) {
                                 newSchedule = TT;
                                 break;
                             }
                         }
-                        if(sub.stationCode.contains("K1")) {
-                            if(result >= 0) {
+                        /*if(sub.stationCode.contains("K3") && transtation.stationCode.contains("K1")) {
+                            if(result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                        if(sub.stationCode.contains("K3") && transtation.stationCode.contains("K3")) {
+                            if(result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }*/
+                        if(sub.stationCode.contains("P3")) {
+                            if(result <= 0) {
                                 newSchedule = TT;
                                 break;
                             }
@@ -678,9 +696,11 @@ class ScheduleManager {
                 } else {  //그 외 역
                     station.schedule = databaseManager.getOneScheduleDB(prev, station);
                     if (station.schedule.lineId == 0) {
-                        if(finalroute.isEmpty()) {  //끝 역 도착시간
+                        if(finalroute.isEmpty()) {  //끝 역 도착시간   || prev.schedule.scheduleName.equals(station.stationName)
                             getEndTime(prev, station);
                         }
+                        else if (prev.schedule.scheduleName.equals(station.stationName))
+                            getEndTime(prev,station);
                         else { //급행 시간표일 때 일반역 패스
                             continue;
                         }
