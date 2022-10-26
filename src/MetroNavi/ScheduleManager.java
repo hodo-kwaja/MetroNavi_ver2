@@ -58,7 +58,7 @@ class ScheduleManager {
             TimeTable TT = schedules.get(i);
 
             if (TT.lineDirection == 0) {    //하행
-                if (TT.lineId == 108) { //경의중
+                if (TT.lineId == 108) { //경춘선
                     SubwayData sub = giveMe(TT);
                     int result = sub.stationCode.compareTo(transtation.stationCode);
 
@@ -134,13 +134,13 @@ class ScheduleManager {
                             }
 
                             int result = sub.stationCode.compareTo(transtation.stationCode);
-                            if(transtation.stationCode.contains("K3")) {
+                            if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K3")) {
                                 if(result <= 0) {
                                     newSchedule = TT;
                                     break;
                                 }
                             }
-                            if(transtation.stationCode.contains("K1")) {
+                            if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K1")) {
                                 if(result >= 0) {
                                     newSchedule = TT;
                                     break;
@@ -151,14 +151,32 @@ class ScheduleManager {
                     else {
                         SubwayData sub = giveMe(TT);
                         int result = sub.stationCode.compareTo(transtation.stationCode);
-                        if(sub.stationCode.contains("K3")) {
+                        if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K1")) {
+                            if(result >= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                        else if(sub.stationCode.contains("K1") && transtation.stationCode.contains("K3")) {
                             if(result <= 0) {
                                 newSchedule = TT;
                                 break;
                             }
                         }
-                        if(sub.stationCode.contains("K1")) {
-                            if(result >= 0) {
+                        /*if(sub.stationCode.contains("K3") && transtation.stationCode.contains("K1")) {
+                            if(result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }
+                        if(sub.stationCode.contains("K3") && transtation.stationCode.contains("K3")) {
+                            if(result <= 0) {
+                                newSchedule = TT;
+                                break;
+                            }
+                        }*/
+                        if(sub.stationCode.contains("P3")) {
+                            if(result <= 0) {
                                 newSchedule = TT;
                                 break;
                             }
@@ -567,7 +585,7 @@ class ScheduleManager {
             temp = databaseManager.getStationWithDetailIdDB(previous.nextStation);
             while (temp != null) {
                 temp.lineDirection = 0;
-                if (temp.stationName.contains(sm.destinationStationName)) { //목적지
+                if (temp.stationName.equals(sm.destinationStationName)) { //목적지
                     temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
@@ -597,7 +615,7 @@ class ScheduleManager {
             temp = databaseManager.getStationWithDetailIdDB(previous.beforeStation);
             while (temp != null) {
                 temp.lineDirection = 1;
-                if (temp.stationName.contains(sm.destinationStationName)) { //목적지
+                if (temp.stationName.equals(sm.destinationStationName)) { //목적지
                     temp.transferNum = station.data.transferNum;
                     Node destination = new Node(temp);
                     station.child.add(destination);
@@ -663,9 +681,6 @@ class ScheduleManager {
         ArrayList<pathInfo> pathInfos = new ArrayList<>();
         SubwayData root = mk.root.data;
         for (int i = 0; i < sm.finalPath.size(); i++) {
-            if(i == 14 || i == 19 || i == 26) {
-                System.out.println("hello");
-            }
             long start = System.currentTimeMillis();
             Stack<SubwayData> finalroute = sm.finalPath.get(i);    //경로 n번
             Stack<Integer> transtation = transNum.get(i);   //통과역 n번
@@ -675,17 +690,17 @@ class ScheduleManager {
             while (!finalroute.isEmpty()) {
                 SubwayData station = finalroute.pop();
                 if ((station.transfer && station.transferInfo.timeSec == 0) || prev == root) {  //출발역 or 환승역
-                    if(station.stationName.equals("디지털미디어시티")) {
-                        System.out.println("hello");
-                    }
-                    station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station), transtation.pop());
+                    int minute = prev.schedule.minute + prev.transferInfo.timeSec/60 + 1;
+                    station.schedule = refineSchedule(databaseManager.getScheduleDB(prev, station, minute), transtation.pop());
                     info1.transferNum++;
                 } else {  //그 외 역
                     station.schedule = databaseManager.getOneScheduleDB(prev, station);
                     if (station.schedule.lineId == 0) {
-                        if(finalroute.isEmpty()) {  //끝 역 도착시간
+                        if(finalroute.isEmpty()) {  //끝 역 도착시간   || prev.schedule.scheduleName.equals(station.stationName)
                             getEndTime(prev, station);
                         }
+                        else if (prev.schedule.scheduleName.equals(station.stationName))
+                            getEndTime(prev,station);
                         else { //급행 시간표일 때 일반역 패스
                             continue;
                         }
@@ -703,11 +718,15 @@ class ScheduleManager {
                 }
                 info1.stepNum++;
                 info1.duration += station.schedule.duration;
+                station.schedule.duration = prev.schedule.duration + station.schedule.duration;
                 prev = station;
             }
-            if(count != 0) {
+            if((double)count/info1.stepNum >= 0.8) {
                 info1.congest = info1.congest / (double) count;
             }
+            else
+                info1.congest = 99999;
+
             info1.transferNum -= 1;
             info1.stepNum -=1;
             if(info1.duration <= 0) {
@@ -736,6 +755,11 @@ class ScheduleManager {
             databaseManager.getEndScheduleDB(start);
             finish.schedule =  databaseManager.getOneScheduleDB(start, finish);
             TimeAndDate.calcEndTime(parent, child, start.schedule, finish.schedule);
+            child.schedule.typeName = parent.schedule.typeName;
+            child.schedule.stationDetailId = child.stationDetailId;
+            child.schedule.weekType = parent.schedule.weekType;
+            child.schedule.scheduleName = parent.schedule.scheduleName;
+            child.schedule.lineId = child.lineId;
         }
         else {
             SubwayData start = new SubwayData(child, parent, 1);
@@ -743,6 +767,11 @@ class ScheduleManager {
             databaseManager.getEndScheduleDB(start);
             finish.schedule = databaseManager.getOneScheduleDB(start, finish);
             TimeAndDate.calcEndTime(parent, child, start.schedule, finish.schedule);
+            child.schedule.typeName = parent.schedule.typeName;
+            child.schedule.stationDetailId = child.stationDetailId;
+            child.schedule.weekType = parent.schedule.weekType;
+            child.schedule.scheduleName = parent.schedule.scheduleName;
+            child.schedule.lineId = child.lineId;
         }
     }
 }
